@@ -4,7 +4,7 @@ import Table from './Table'
 
 const users = [
   { name: 'Trevor', age: 98 },
-  { name: 'John', age: 43 },
+  { name: 'John', age: 83 },
   { name: 'Karen', age: 76 },
 ]
 
@@ -29,6 +29,7 @@ storiesOf('Table', module)
   ))
   .add('sorting', () => (
     <Table data={users}>
+      <Table.Filter />
       <Table.Header>
         <Table.Row>
           <Table.Cell sortBy="name">Name</Table.Cell>

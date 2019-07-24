@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -p 5000"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +15,8 @@
     "babel-loader": "^8.0.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
+  },
+  "dependencies": {
+    "lodash": "^4.17.14"
   }
 }

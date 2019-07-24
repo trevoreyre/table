@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  app:
+    container_name: 'table'
+    build: .
+    volumes:
+      - .:/home/node/app
+    ports:
+      - '5000:5000' # table storybook
+    stdin_open: true
+    tty: true
