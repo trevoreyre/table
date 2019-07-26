@@ -1,19 +1,54 @@
 {
-  "name": "table",
+  "name": "@trevoreyre/table-react",
   "version": "0.0.1",
-  "description": "",
+  "description": "React data table components",
   "main": "index.js",
-  "scripts": {
-    "start": "start-storybook -p 5000"
+  "keywords": [
+    "react",
+    "table",
+    "datatable"
+  ],
+  "author": "Trevor Eyre <trevoreyre@gmail.com> (https://trevoreyre.com)",
+  "license": "MIT",
+  "repository": "trevoreyre/table",
+  "bugs": "https://github.com/trevoreyre/table/issues",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "start": "start-storybook -p 5000",
+    "lint": "eslint --fix ."
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint --",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.5.4",
     "@material-ui/core": "^4.2.1",
     "@storybook/react": "^5.1.9",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-plugin-flowtype": "^2.50.3",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "husky": "^3.0.1",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
     "react-dom": "^16.8.6",

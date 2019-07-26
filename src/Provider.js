@@ -10,7 +10,7 @@ const initialState = {
   sortBy: undefined,
   direction: 'asc',
   search: '',
-};
+}
 
 const searchOptions = {
   threshold: 0.3,
@@ -33,7 +33,7 @@ function reducer(state, action) {
           state.search ? state.fuse.search(state.search) : state.initialData,
           action.sortBy,
           action.direction
-        )
+        ),
       }
     case 'search':
       return {
@@ -43,7 +43,7 @@ function reducer(state, action) {
           action.search ? state.fuse.search(action.search) : state.initialData,
           state.sortBy,
           state.direction
-        )
+        ),
       }
     default:
       return state
@@ -56,7 +56,7 @@ const Provider = props => {
     ...initialState,
     initialData: data,
     data,
-    fuse: new Fuse(data, { ...searchOptions, keys: Object.keys(data[0])})
+    fuse: new Fuse(data, { ...searchOptions, keys: Object.keys(data[0]) }),
   })
 
   return (

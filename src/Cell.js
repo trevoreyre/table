@@ -16,7 +16,8 @@ const Cell = props => {
 
   const handleClick = event => {
     if (sortBy) {
-      const direction = ctx.sortBy === sortBy && ctx.direction === 'asc' ? 'desc' : 'asc'
+      const direction =
+        ctx.sortBy === sortBy && ctx.direction === 'asc' ? 'desc' : 'asc'
       ctx.dispatch({ type: 'sort', sortBy, direction })
     }
     if (onClick) {

@@ -18,7 +18,7 @@ const T = {
   R: Row,
   Search,
   SortIcon,
-  Table
+  Table,
 }
 
 export default T
