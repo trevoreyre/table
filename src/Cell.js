@@ -1,29 +1,44 @@
 import React, { useContext } from 'react'
 import { TableContext, LevelContext } from './Context'
 
+const SortIndicator = props => {
+  const { direction, ...other } = props
+  const style = {
+    display: 'inline-block',
+    transform: `rotate(${direction === 'desc' ? '180deg' : '0'})`
+  }
+
+  return (
+    <span style={style} {...other}>^</span>
+  )
+}
+
 const Cell = props => {
-  const { as, children, onClick, sortBy, ...other } = props
   const ctx = useContext(TableContext)
   const level = useContext(LevelContext)
+  const {
+    as: As = level === 'header' ? 'th' : 'td',
+    children,
+    onClick,
+    sortBy,
+    ...other
+  } = props
 
   const handleClick = event => {
     if (sortBy) {
       const direction = ctx.sortBy === sortBy && ctx.direction === 'asc' ? 'desc' : 'asc'
-      ctx.onSort(sortBy, direction)
+      ctx.dispatch({ type: 'sort', sortBy, direction })
     }
     if (onClick) {
       onClick(event)
     }
   }
 
-  console.log({ ctx })
-  const Component = as ? as : level === 'header' ? 'th' : 'td'
-
   return (
-    <Component onClick={handleClick} {...other}>
+    <As onClick={handleClick} {...other}>
       {children}
-      {sortBy && sortBy === ctx.sortBy && <div>sorted {ctx.direction}</div>}
-    </Component>
+      {sortBy && sortBy === ctx.sortBy && <SortIndicator direction={ctx.direction} />}
+    </As>
   )
 }
 

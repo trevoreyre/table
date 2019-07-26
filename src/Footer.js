@@ -2,11 +2,15 @@ import React from 'react'
 import { LevelContext } from './Context'
 
 const Footer = props => {
-  const { children, ...other } = props
+  const {
+    as: As = 'tfoot',
+    children,
+    ...other
+  } = props
 
   return (
     <LevelContext.Provider value="footer">
-      <tfoot {...other}>{children}</tfoot>
+      <As {...other}>{children}</As>
     </LevelContext.Provider>
   )
 }

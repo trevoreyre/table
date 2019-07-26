@@ -2,14 +2,19 @@ import React, { useContext } from 'react'
 import { TableContext, LevelContext } from './Context'
 
 const Body = props => {
-  const { children, ...other } = props
+  const {
+    as: As = 'tbody',
+    children,
+    ...other
+  } = props
   const ctx = useContext(TableContext)
+  console.log('ctx:', ctx)
 
   return (
     <LevelContext.Provider value="body">
-      <tbody {...other}>
+      <As {...other}>
         {typeof children === 'function' ? children(ctx.data) : children}
-      </tbody>
+      </As>
     </LevelContext.Provider>
   )
 }

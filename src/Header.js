@@ -1,10 +1,18 @@
 import React from 'react'
 import { LevelContext } from './Context'
 
-const Header = ({ children, ...other }) => (
-  <LevelContext.Provider value="header">
-    <thead {...other}>{children}</thead>
-  </LevelContext.Provider>
-)
+const Header = props => {
+  const {
+    as: As = 'thead',
+    children,
+    ...other
+  } = props
+
+  return (
+    <LevelContext.Provider value="header">
+      <As {...other}>{children}</As>
+    </LevelContext.Provider>
+  )
+}
 
 export default Header
