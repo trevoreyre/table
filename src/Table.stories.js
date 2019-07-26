@@ -1,104 +1,151 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import BootstrapTable from 'react-bootstrap/Table'
+import { OutlinedInput, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core'
 import users from './MOCK_DATA.json'
-import Table from './Table'
+import T from './T'
 
 storiesOf('Table', module)
   .add('default', () => (
-    <Table as={BootstrapTable} striped>
-      <Table.Header>
-        <Table.Row>
-          <Table.Cell>Header 1</Table.Cell>
-          <Table.Cell>Header 2</Table.Cell>
-          <Table.Cell>Header 3</Table.Cell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Cell 1</Table.Cell>
-          <Table.Cell>Cell 2</Table.Cell>
-          <Table.Cell>Cell 3</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Cell 1</Table.Cell>
-          <Table.Cell>Cell 2</Table.Cell>
-          <Table.Cell>Cell 3</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <T.Table as={BootstrapTable} striped>
+      <T.Head>
+        <T.R>
+          <T.H>Header 1</T.H>
+          <T.H>Header 2</T.H>
+          <T.H>Header 3</T.H>
+        </T.R>
+      </T.Head>
+      <T.Body>
+        <T.R>
+          <T.D>Cell 1</T.D>
+          <T.D>Cell 2</T.D>
+          <T.D>Cell 3</T.D>
+        </T.R>
+        <T.R>
+          <T.D>Cell 1</T.D>
+          <T.D>Cell 2</T.D>
+          <T.D>Cell 3</T.D>
+        </T.R>
+      </T.Body>
+    </T.Table>
   ))
   .add('sorting', () => (
-    <Table.Provider data={users}>
-      <Table as={BootstrapTable} striped>
-        <Table.Header>
-          <Table.Row>
-            <Table.Cell sortBy="name">Name</Table.Cell>
-            <Table.Cell sortBy="email">Email</Table.Cell>
-            <Table.Cell sortBy="ipAddress">IP Address</Table.Cell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+    <T.Provider data={users}>
+      <T.Table as={BootstrapTable} striped>
+        <T.Head>
+          <T.R>
+            <T.H sortBy="name"><T.SortIcon />Name</T.H>
+            <T.H sortBy="email">Email <T.SortIcon /></T.H>
+            <T.H sortBy="ipAddress">IP Address <T.SortIcon /></T.H>
+          </T.R>
+        </T.Head>
+        <T.Body>
           {users => users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
+            <T.R key={user.id}>
+              <T.D>{user.name}</T.D>
+              <T.D>{user.email}</T.D>
+              <T.D>{user.ipAddress}</T.D>
+            </T.R>
           ))}
-        </Table.Body>
-      </Table>
-    </Table.Provider>
+        </T.Body>
+      </T.Table>
+    </T.Provider>
   ))
   .add('search', () => (
-    <Table.Provider data={users}>
-      <Table.Search />
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.Cell sortBy="name">Name</Table.Cell>
-            <Table.Cell sortBy="email">Email</Table.Cell>
-            <Table.Cell sortBy="ipAddress">IP Address</Table.Cell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+    <T.Provider data={users}>
+      <T.Search />
+      <T.Table as={BootstrapTable} striped>
+        <T.Head>
+          <T.R>
+            <T.H sortBy="name">Name</T.H>
+            <T.H sortBy="email">Email</T.H>
+            <T.H sortBy="ipAddress">IP Address</T.H>
+          </T.R>
+        </T.Head>
+        <T.Body>
           {users => users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
+            <T.R key={user.id}>
+              <T.D>{user.name}</T.D>
+              <T.D>{user.email}</T.D>
+              <T.D>{user.ipAddress}</T.D>
+            </T.R>
           ))}
-        </Table.Body>
-      </Table>
-    </Table.Provider>
+        </T.Body>
+      </T.Table>
+    </T.Provider>
   ))
   .add('selectable', () => (
-    <Table />
+    <T.Table />
   ))
   .add('custom cell', () => (
-    <Table.Provider data={users}>
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.Cell />
-            <Table.Cell sortBy="name">Name</Table.Cell>
-            <Table.Cell sortBy="email">Email</Table.Cell>
-            <Table.Cell sortBy="ipAddress">IP Address</Table.Cell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+    <T.Provider data={users}>
+      <T.Table as={BootstrapTable} striped>
+        <T.Head>
+          <T.R>
+            <T.H />
+            <T.H sortBy="name">Name</T.H>
+            <T.H sortBy="email">Email</T.H>
+            <T.H sortBy="ipAddress">IP Address</T.H>
+          </T.R>
+        </T.Head>
+        <T.Body>
           {users => users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>
+            <T.R key={user.id}>
+              <T.D>
                 <img src={user.avatar} alt="Profile picture" width="80" height="80" />
-              </Table.Cell>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
+              </T.D>
+              <T.D>{user.name}</T.D>
+              <T.D>{user.email}</T.D>
+              <T.D>{user.ipAddress}</T.D>
+            </T.R>
           ))}
-        </Table.Body>
-      </Table>
-    </Table.Provider>
+        </T.Body>
+      </T.Table>
+    </T.Provider>
+  ))
+  .add('material-ui table', () => (
+    <T.Provider data={users}>
+      <T.Search as={OutlinedInput} />
+      <T.Table as={Table}>
+        <T.Head as={TableHead}>
+          <T.R as={TableRow}>
+            <T.H as={TableCell} sortBy="name">Name</T.H>
+            <T.H as={TableCell} sortBy="email">Email</T.H>
+            <T.H as={TableCell} sortBy="ipAddress">IP Address</T.H>
+          </T.R>
+        </T.Head>
+        <T.Body as={TableBody}>
+          {users => users.map(user => (
+            <T.R key={user.id} as={TableRow}>
+              <T.D as={TableCell}>{user.name}</T.D>
+              <T.D as={TableCell}>{user.email}</T.D>
+              <T.D as={TableCell}>{user.ipAddress}</T.D>
+            </T.R>
+          ))}
+        </T.Body>
+      </T.Table>
+    </T.Provider>
+  ))
+  .add('regular-ass table', () => (
+    <BootstrapTable striped>
+      <thead>
+        <tr>
+          <th>Header 1</th>
+          <th>Header 2</th>
+          <th>Header 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cell 1</td>
+          <td>Cell 2</td>
+          <td>Cell 3</td>
+        </tr>
+        <tr>
+          <td>Cell 1</td>
+          <td>Cell 2</td>
+          <td>Cell 3</td>
+        </tr>
+      </tbody>
+    </BootstrapTable>
   ))

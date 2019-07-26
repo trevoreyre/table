@@ -1,17 +1,5 @@
 import React, { useContext } from 'react'
-import { TableContext, LevelContext } from './Context'
-
-const SortIndicator = props => {
-  const { direction, ...other } = props
-  const style = {
-    display: 'inline-block',
-    transform: `rotate(${direction === 'desc' ? '180deg' : '0'})`
-  }
-
-  return (
-    <span style={style} {...other}>^</span>
-  )
-}
+import { TableContext, LevelContext, SortContext } from './Context'
 
 const Cell = props => {
   const ctx = useContext(TableContext)
@@ -24,6 +12,8 @@ const Cell = props => {
     ...other
   } = props
 
+  const active = ctx.sortBy === sortBy
+
   const handleClick = event => {
     if (sortBy) {
       const direction = ctx.sortBy === sortBy && ctx.direction === 'asc' ? 'desc' : 'asc'
@@ -35,10 +25,11 @@ const Cell = props => {
   }
 
   return (
-    <As onClick={handleClick} {...other}>
-      {children}
-      {sortBy && sortBy === ctx.sortBy && <SortIndicator direction={ctx.direction} />}
-    </As>
+    <SortContext.Provider value={{ active, direction: ctx.direction }}>
+      <As onClick={handleClick} {...other}>
+        {children}
+      </As>
+    </SortContext.Provider>
   )
 }
 
