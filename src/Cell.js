@@ -12,8 +12,6 @@ const Cell = props => {
     ...other
   } = props
 
-  const active = ctx.sortBy === sortBy
-
   const handleClick = event => {
     if (sortBy) {
       const direction =
@@ -25,8 +23,13 @@ const Cell = props => {
     }
   }
 
+  const contextValue = {
+    active: sortBy ? ctx.sortBy === sortBy : false,
+    direction: sortBy ? ctx.direction : 'asc',
+  }
+
   return (
-    <SortContext.Provider value={{ active, direction: ctx.direction }}>
+    <SortContext.Provider value={contextValue}>
       <As onClick={handleClick} {...other}>
         {children}
       </As>

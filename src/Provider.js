@@ -1,15 +1,17 @@
 import React, { useReducer } from 'react'
+import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import Fuse from 'fuse.js'
 import { TableContext } from './Context'
 
 const initialState = {
-  initialData: [],
-  data: [],
-  fuse: { search: () => [] },
-  sortBy: undefined,
   direction: 'asc',
+  fuse: { search: () => [] },
+  initialData: [],
+  page: undefined,
+  perPage: undefined,
   search: '',
+  sortBy: undefined,
 }
 
 const searchOptions = {
@@ -20,6 +22,19 @@ const searchOptions = {
   minMatchCharLength: 1,
 }
 
+const getFilteredData = ({ direction, fuse, initialData, search, sortBy }) => {
+  let data = cloneDeep(initialData)
+  if (search) {
+    data = fuse.search(search)
+  }
+  if (sortBy) {
+    data = orderBy(data, sortBy, direction)
+  }
+  return data
+}
+
+const getTotalPages = ({ data, perPage }) => Math.ceil(data.length / perPage)
+
 function reducer(state, action) {
   console.log({ action, state })
 
@@ -29,21 +44,18 @@ function reducer(state, action) {
         ...state,
         sortBy: action.sortBy,
         direction: action.direction,
-        data: orderBy(
-          state.search ? state.fuse.search(state.search) : state.initialData,
-          action.sortBy,
-          action.direction
-        ),
+        page: 1,
       }
     case 'search':
       return {
         ...state,
         search: action.search,
-        data: orderBy(
-          action.search ? state.fuse.search(action.search) : state.initialData,
-          state.sortBy,
-          state.direction
-        ),
+        page: 1,
+      }
+    case 'changePage':
+      return {
+        ...state,
+        page: action.page,
       }
     default:
       return state
@@ -51,16 +63,37 @@ function reducer(state, action) {
 }
 
 const Provider = props => {
-  const { children, data = [{}] } = props
+  const { children, data: dataProp = [{}], page, perPage } = props
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    initialData: data,
-    data,
-    fuse: new Fuse(data, { ...searchOptions, keys: Object.keys(data[0]) }),
+    initialData: dataProp,
+    page,
+    perPage,
+    fuse: new Fuse(dataProp, {
+      ...searchOptions,
+      keys: Object.keys(dataProp[0]),
+    }),
   })
 
+  let filteredData = getFilteredData(state)
+  const totalPages = getTotalPages({ ...state, data: filteredData })
+  const data =
+    state.page && state.perPage
+      ? filteredData.slice(
+          (state.page - 1) * state.perPage,
+          state.page * state.perPage
+        )
+      : filteredData
+
   return (
-    <TableContext.Provider value={{ ...state, dispatch }}>
+    <TableContext.Provider
+      value={{
+        ...state,
+        data,
+        totalPages,
+        dispatch,
+      }}
+    >
       {children}
     </TableContext.Provider>
   )

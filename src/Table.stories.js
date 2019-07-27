@@ -42,8 +42,7 @@ storiesOf('Table', module)
         <T.Head>
           <T.R>
             <T.H sortBy="name">
-              <T.SortIcon />
-              Name
+              Name <T.SortIcon />
             </T.H>
             <T.H sortBy="email">
               Email <T.SortIcon />
@@ -73,9 +72,15 @@ storiesOf('Table', module)
       <T.Table as={BootstrapTable} striped>
         <T.Head>
           <T.R>
-            <T.H sortBy="name">Name</T.H>
-            <T.H sortBy="email">Email</T.H>
-            <T.H sortBy="ipAddress">IP Address</T.H>
+            <T.H sortBy="name">
+              Name <T.SortIcon />
+            </T.H>
+            <T.H sortBy="email">
+              Email <T.SortIcon />
+            </T.H>
+            <T.H sortBy="ipAddress">
+              IP Address <T.SortIcon />
+            </T.H>
           </T.R>
         </T.Head>
         <T.Body>
@@ -92,6 +97,59 @@ storiesOf('Table', module)
       </T.Table>
     </T.Provider>
   ))
+  .add('pagination', () => (
+    <T.Provider data={users} page={1} perPage={100}>
+      <T.Search />
+      <T.Pagination>
+        {({ page, totalPages }) => (
+          <>
+            <T.PageButton type="first">{'<<'}</T.PageButton>
+            <T.PageButton type="prev">{'<'}</T.PageButton>
+            {`${page} of ${totalPages}`}
+            <T.PageButton type="next">{'>'}</T.PageButton>
+            <T.PageButton type="last">{'>>'}</T.PageButton>
+          </>
+        )}
+      </T.Pagination>
+      <T.Table as={BootstrapTable} striped>
+        <T.Head>
+          <T.R>
+            <T.H sortBy="name">
+              Name <T.SortIcon />
+            </T.H>
+            <T.H sortBy="email">
+              Email <T.SortIcon />
+            </T.H>
+            <T.H sortBy="ipAddress">
+              IP Address <T.SortIcon />
+            </T.H>
+          </T.R>
+        </T.Head>
+        <T.Body>
+          {users =>
+            users.map(user => (
+              <T.R key={user.id}>
+                <T.D>{user.name}</T.D>
+                <T.D>{user.email}</T.D>
+                <T.D>{user.ipAddress}</T.D>
+              </T.R>
+            ))
+          }
+        </T.Body>
+      </T.Table>
+      <T.Pagination>
+        {({ page, totalPages }) => (
+          <>
+            <T.PageButton type="first">{'<<'}</T.PageButton>
+            <T.PageButton type="prev">{'<'}</T.PageButton>
+            {`${page} of ${totalPages}`}
+            <T.PageButton type="next">{'>'}</T.PageButton>
+            <T.PageButton type="last">{'>>'}</T.PageButton>
+          </>
+        )}
+      </T.Pagination>
+    </T.Provider>
+  ))
   .add('selectable', () => <T.Table />)
   .add('custom cell', () => (
     <T.Provider data={users}>
@@ -99,9 +157,15 @@ storiesOf('Table', module)
         <T.Head>
           <T.R>
             <T.H />
-            <T.H sortBy="name">Name</T.H>
-            <T.H sortBy="email">Email</T.H>
-            <T.H sortBy="ipAddress">IP Address</T.H>
+            <T.H sortBy="name">
+              Name <T.SortIcon />
+            </T.H>
+            <T.H sortBy="email">
+              Email <T.SortIcon />
+            </T.H>
+            <T.H sortBy="ipAddress">
+              IP Address <T.SortIcon />
+            </T.H>
           </T.R>
         </T.Head>
         <T.Body>
