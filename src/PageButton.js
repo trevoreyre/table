@@ -3,36 +3,35 @@ import { TableContext } from './Context'
 
 const PageButton = props => {
   const ctx = useContext(TableContext)
-  const { as: As = 'button', children, onClick, type, ...other } = props
+  const { as: As = 'button', children, onClick, value, ...other } = props
 
   const handleClick = event => {
     let page
-
-    switch (type) {
-      case 'next':
-        page = Math.min(ctx.page + 1, ctx.totalPages)
+    switch (value) {
+      case 'first':
+        page = 1
         break
       case 'prev':
         page = Math.max(ctx.page - 1, 1)
         break
-      case 'first':
-        page = 1
+      case 'next':
+        page = Math.min(ctx.page + 1, ctx.totalPages)
         break
       case 'last':
         page = ctx.totalPages
         break
       default:
-        page = ctx.page
+        page = value
     }
-    ctx.dispatch({ type: 'changePage', page })
 
+    ctx.dispatch({ type: 'changePage', page })
     if (onClick) {
       onClick(event)
     }
   }
 
   let disabled
-  switch (type) {
+  switch (value) {
     case 'next':
     case 'last':
       disabled = ctx.page === ctx.totalPages
