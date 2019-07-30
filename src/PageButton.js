@@ -45,7 +45,12 @@ const PageButton = props => {
   }
 
   return (
-    <As disabled={disabled} onClick={handleClick} {...other}>
+    <As
+      disabled={disabled}
+      onClick={handleClick}
+      style={{ display: 'inline-block', width: '40px' }}
+      {...other}
+    >
       {children}
     </As>
   )

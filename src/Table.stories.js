@@ -100,6 +100,49 @@ storiesOf('Table', module)
   .add('pagination', () => (
     <Table.Provider data={users} page={1} perPage={100}>
       <Table.Search />
+      <Table.Pagination />
+      <Table.Table as={BootstrapTable} striped>
+        <Table.Header>
+          <Table.Row>
+            <Table.Cell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.Cell>
+            <Table.Cell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.Cell>
+            <Table.Cell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+      <Table.Pagination>
+        {({ page, totalPages }) => (
+          <>
+            <Table.PageButton value="first">{'<<'}</Table.PageButton>
+            <Table.PageButton value="prev">{'<'}</Table.PageButton>
+            {`${page} of ${totalPages}`}
+            <Table.PageButton value="next">{'>'}</Table.PageButton>
+            <Table.PageButton value="last">{'>>'}</Table.PageButton>
+          </>
+        )}
+      </Table.Pagination>
+    </Table.Provider>
+  ))
+  .add('custom pagination', () => (
+    <Table.Provider data={users} page={1} perPage={100}>
+      <Table.Search />
       <Table.Pagination>
         {({ page, totalPages }) => (
           <>
