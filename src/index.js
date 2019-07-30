@@ -3,6 +3,7 @@ import Cell from './Cell'
 import Footer from './Footer'
 import Header from './Header'
 import PageButton from './PageButton'
+import PageList from './PageList'
 import Pagination from './Pagination'
 import Provider from './Provider'
 import Row from './Row'
@@ -16,6 +17,7 @@ const Components = {
   Footer,
   Header,
   PageButton,
+  PageList,
   Pagination,
   Provider,
   Row,
@@ -31,6 +33,7 @@ const T = {
   H: Cell,
   Head: Header,
   PageButton,
+  PageList,
   Pagination,
   Provider,
   R: Row,
@@ -48,6 +51,7 @@ export {
   Footer as TableFooter,
   Header as TableHeader,
   PageButton as TablePageButton,
+  PageList as TablePageList,
   Pagination as TablePagination,
   Provider as TableProvider,
   Row as TableRow,
@@ -61,6 +65,7 @@ export {
   Cell as TH,
   Header as THead,
   PageButton as TPageButton,
+  PageList as TPageList,
   Pagination as TPagination,
   Provider as TProvider,
   Row as TR,

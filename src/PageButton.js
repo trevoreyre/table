@@ -6,6 +6,7 @@ const PageButton = props => {
   const { as: As = 'button', children, onClick, value, ...other } = props
 
   const handleClick = event => {
+    console.log('handleClick:', event)
     let page
     switch (value) {
       case 'first':
@@ -45,12 +46,7 @@ const PageButton = props => {
   }
 
   return (
-    <As
-      disabled={disabled}
-      onClick={handleClick}
-      style={{ display: 'inline-block', width: '40px' }}
-      {...other}
-    >
+    <As disabled={disabled} onClick={handleClick} {...other}>
       {children}
     </As>
   )

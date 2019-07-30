@@ -2,6 +2,8 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import BootstrapTable from 'react-bootstrap/Table'
 import {
+  Button,
+  IconButton,
   OutlinedInput,
   Table as MuiTable,
   TableBody,
@@ -9,6 +11,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core'
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import users from './MOCK_DATA.json'
 import Table from './index'
 
@@ -98,9 +101,13 @@ storiesOf('Table', module)
     </Table.Provider>
   ))
   .add('pagination', () => (
-    <Table.Provider data={users} page={1} perPage={100}>
+    <Table.Provider data={users} perPage={10}>
       <Table.Search />
-      <Table.Pagination />
+      <Table.Pagination>
+        <Table.PageButton value="prev">{'<'}</Table.PageButton>
+        <Table.PageList style={{ width: '40px', display: 'inline-block' }} />
+        <Table.PageButton value="next">{'>'}</Table.PageButton>
+      </Table.Pagination>
       <Table.Table as={BootstrapTable} striped>
         <Table.Header>
           <Table.Row>
@@ -128,15 +135,9 @@ storiesOf('Table', module)
         </Table.Body>
       </Table.Table>
       <Table.Pagination>
-        {({ page, totalPages }) => (
-          <>
-            <Table.PageButton value="first">{'<<'}</Table.PageButton>
-            <Table.PageButton value="prev">{'<'}</Table.PageButton>
-            {`${page} of ${totalPages}`}
-            <Table.PageButton value="next">{'>'}</Table.PageButton>
-            <Table.PageButton value="last">{'>>'}</Table.PageButton>
-          </>
-        )}
+        <Table.PageButton value="prev">{'<'}</Table.PageButton>
+        <Table.PageList style={{ width: '40px', display: 'inline-block' }} />
+        <Table.PageButton value="next">{'>'}</Table.PageButton>
       </Table.Pagination>
     </Table.Provider>
   ))
@@ -238,7 +239,7 @@ storiesOf('Table', module)
     </Table.Provider>
   ))
   .add('material-ui table', () => (
-    <Table.Provider data={users}>
+    <Table.Provider data={users} perPage={10}>
       <Table.Search as={OutlinedInput} />
       <Table.Table as={MuiTable}>
         <Table.Header as={TableHead}>
@@ -266,6 +267,15 @@ storiesOf('Table', module)
           }
         </Table.Body>
       </Table.Table>
+      <Table.Pagination>
+        <Table.PageButton as={IconButton} value="prev" size="small">
+          <KeyboardArrowLeft />
+        </Table.PageButton>
+        <Table.PageList as={Button} style={{ minWidth: '40px' }} />
+        <Table.PageButton as={IconButton} value="next" size="small">
+          <KeyboardArrowRight />
+        </Table.PageButton>
+      </Table.Pagination>
     </Table.Provider>
   ))
   .add('regular-ass table', () => (

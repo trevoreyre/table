@@ -63,7 +63,7 @@ function reducer(state, action) {
 }
 
 const Provider = props => {
-  const { children, data: dataProp = [{}], page, perPage } = props
+  const { children, data: dataProp = [{}], page = 1, perPage } = props
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     initialData: dataProp,
