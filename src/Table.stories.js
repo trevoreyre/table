@@ -1,23 +1,32 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import BootstrapTable from 'react-bootstrap/Table'
 import {
-  Button,
-  IconButton,
-  OutlinedInput,
+  Pagination as BSPagination,
+  Table as BSTable,
+  Form as BSForm,
+} from 'react-bootstrap'
+import {
+  IconButton as MuiIconButton,
+  OutlinedInput as MuiInput,
+  Select as MuiSelect,
   Table as MuiTable,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
+  TableBody as MuiTableBody,
+  TableCell as MuiTableCell,
+  TableHead as MuiTableHead,
+  TableRow as MuiTableRow,
 } from '@material-ui/core'
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
+import {
+  FirstPage,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  LastPage,
+} from '@material-ui/icons'
 import users from './MOCK_DATA.json'
 import Table from './index'
 
 storiesOf('Table', module)
   .add('default', () => (
-    <Table.Table as={BootstrapTable} striped>
+    <Table.Table>
       <Table.Header>
         <Table.Row>
           <Table.Cell>Header 1</Table.Cell>
@@ -41,7 +50,7 @@ storiesOf('Table', module)
   ))
   .add('sorting', () => (
     <Table.Provider data={users}>
-      <Table.Table as={BootstrapTable} striped>
+      <Table.Table>
         <Table.Header>
           <Table.Row>
             <Table.Cell sortBy="name">
@@ -71,8 +80,8 @@ storiesOf('Table', module)
   ))
   .add('search', () => (
     <Table.Provider data={users}>
-      <Table.Search />
-      <Table.Table as={BootstrapTable} striped>
+      <Table.Search placeholder="Search" />
+      <Table.Table>
         <Table.Header>
           <Table.Row>
             <Table.Cell sortBy="name">
@@ -103,12 +112,7 @@ storiesOf('Table', module)
   .add('pagination', () => (
     <Table.Provider data={users} perPage={10}>
       <Table.Search />
-      <Table.Pagination>
-        <Table.PageButton value="prev">{'<'}</Table.PageButton>
-        <Table.PageList style={{ width: '40px', display: 'inline-block' }} />
-        <Table.PageButton value="next">{'>'}</Table.PageButton>
-      </Table.Pagination>
-      <Table.Table as={BootstrapTable} striped>
+      <Table.Table>
         <Table.Header>
           <Table.Row>
             <Table.Cell sortBy="name">
@@ -134,32 +138,13 @@ storiesOf('Table', module)
           }
         </Table.Body>
       </Table.Table>
-      <Table.Pagination>
-        <Table.PageButton value="prev">{'<'}</Table.PageButton>
-        <Table.PageList style={{ width: '40px', display: 'inline-block' }} />
-        <Table.PageButton value="next">{'>'}</Table.PageButton>
-      </Table.Pagination>
+      <Table.Pagination />
     </Table.Provider>
   ))
   .add('custom pagination', () => (
-    <Table.Provider data={users} page={1} perPage={100}>
+    <Table.Provider data={users} page={1} perPage={10}>
       <Table.Search />
-      <Table.Pagination>
-        {({ page, totalPages }) => (
-          <>
-            <Table.PageButton value="first">{'<<'}</Table.PageButton>
-            <Table.PageButton value="prev">{'<'}</Table.PageButton>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(value => (
-              <Table.PageButton value={value}>
-                {page === value ? <strong>{value}</strong> : value}
-              </Table.PageButton>
-            ))}
-            <Table.PageButton value="next">{'>'}</Table.PageButton>
-            <Table.PageButton value="last">{'>>'}</Table.PageButton>
-          </>
-        )}
-      </Table.Pagination>
-      <Table.Table as={BootstrapTable} striped>
+      <Table.Table>
         <Table.Header>
           <Table.Row>
             <Table.Cell sortBy="name">
@@ -190,9 +175,17 @@ storiesOf('Table', module)
           <>
             <Table.PageButton value="first">{'<<'}</Table.PageButton>
             <Table.PageButton value="prev">{'<'}</Table.PageButton>
-            {`${page} of ${totalPages}`}
+            <Table.PageInput />
+            {`/${totalPages}`}
             <Table.PageButton value="next">{'>'}</Table.PageButton>
             <Table.PageButton value="last">{'>>'}</Table.PageButton>
+            <span>Per page</span>
+            <Table.PerPage>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </Table.PerPage>
           </>
         )}
       </Table.Pagination>
@@ -201,7 +194,7 @@ storiesOf('Table', module)
   .add('selectable', () => <Table.Table />)
   .add('custom cell', () => (
     <Table.Provider data={users}>
-      <Table.Table as={BootstrapTable} striped>
+      <Table.Table>
         <Table.Header>
           <Table.Row>
             <Table.Cell />
@@ -240,46 +233,129 @@ storiesOf('Table', module)
   ))
   .add('material-ui table', () => (
     <Table.Provider data={users} perPage={10}>
-      <Table.Search as={OutlinedInput} />
+      <Table.Search as={MuiInput} placeholder="Search" />
       <Table.Table as={MuiTable}>
-        <Table.Header as={TableHead}>
-          <Table.Row as={TableRow}>
-            <Table.Cell as={TableCell} sortBy="name">
+        <Table.Header as={MuiTableHead}>
+          <Table.Row as={MuiTableRow}>
+            <Table.Cell as={MuiTableCell} sortBy="name">
               Name
             </Table.Cell>
-            <Table.Cell as={TableCell} sortBy="email">
+            <Table.Cell as={MuiTableCell} sortBy="email">
               Email
             </Table.Cell>
-            <Table.Cell as={TableCell} sortBy="ipAddress">
+            <Table.Cell as={MuiTableCell} sortBy="ipAddress">
               IP Address
             </Table.Cell>
           </Table.Row>
         </Table.Header>
-        <Table.Body as={TableBody}>
+        <Table.Body as={MuiTableBody}>
           {users =>
             users.map(user => (
-              <Table.Row key={user.id} as={TableRow}>
-                <Table.Cell as={TableCell}>{user.name}</Table.Cell>
-                <Table.Cell as={TableCell}>{user.email}</Table.Cell>
-                <Table.Cell as={TableCell}>{user.ipAddress}</Table.Cell>
+              <Table.Row key={user.id} as={MuiTableRow}>
+                <Table.Cell as={MuiTableCell}>{user.name}</Table.Cell>
+                <Table.Cell as={MuiTableCell}>{user.email}</Table.Cell>
+                <Table.Cell as={MuiTableCell}>{user.ipAddress}</Table.Cell>
               </Table.Row>
             ))
           }
         </Table.Body>
       </Table.Table>
-      <Table.Pagination>
-        <Table.PageButton as={IconButton} value="prev" size="small">
-          <KeyboardArrowLeft />
-        </Table.PageButton>
-        <Table.PageList as={Button} style={{ minWidth: '40px' }} />
-        <Table.PageButton as={IconButton} value="next" size="small">
-          <KeyboardArrowRight />
-        </Table.PageButton>
+      <Table.Pagination style={{ marginTop: '24px' }}>
+        {({ page, perPage, totalPages }) => (
+          <>
+            <span style={{ marginRight: '16px', fontSize: '14px' }}>
+              Rows per page:
+            </span>
+            <Table.PerPage
+              as={MuiSelect}
+              native
+              disableUnderline
+              style={{ marginRight: '16px ', fontSize: '14px' }}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </Table.PerPage>
+            <span
+              style={{
+                display: 'inline-block',
+                width: '120px',
+                fontSize: '14px',
+              }}
+            >
+              {(page - 1) * perPage + 1}-{page * perPage} of{' '}
+              {totalPages * perPage}
+            </span>
+            <Table.PageButton as={MuiIconButton} value="first">
+              <FirstPage />
+            </Table.PageButton>
+            <Table.PageButton as={MuiIconButton} value="prev">
+              <KeyboardArrowLeft />
+            </Table.PageButton>
+            <Table.PageButton as={MuiIconButton} value="next">
+              <KeyboardArrowRight />
+            </Table.PageButton>
+            <Table.PageButton as={MuiIconButton} value="last">
+              <LastPage />
+            </Table.PageButton>
+          </>
+        )}
+      </Table.Pagination>
+    </Table.Provider>
+  ))
+  .add('Bootstrap table', () => (
+    <Table.Provider data={users} perPage={10}>
+      <Table.Search
+        as={BSForm.Control}
+        style={{ maxWidth: '300px', marginBottom: '24px' }}
+        placeholder="Search"
+      />
+      <Table.Table as={BSTable} striped>
+        <Table.Header>
+          <Table.Row>
+            <Table.Cell sortBy="name">Name</Table.Cell>
+            <Table.Cell sortBy="email">Email</Table.Cell>
+            <Table.Cell sortBy="ipAddress">IP Address</Table.Cell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+      <Table.Pagination as={BSPagination} style={{ marginTop: '24px' }}>
+        {({ page, pageList }) => (
+          <>
+            <Table.PageButton as={BSPagination.Prev} value="prev" />
+            {pageList.map((value, i) =>
+              value === '...' ? (
+                <BSPagination.Ellipsis key={value + i} />
+              ) : (
+                <Table.PageButton
+                  key={value}
+                  as={BSPagination.Item}
+                  value={value}
+                  active={value === page}
+                >
+                  {value}
+                </Table.PageButton>
+              )
+            )}
+            <Table.PageButton as={BSPagination.Next} value="next" />
+          </>
+        )}
       </Table.Pagination>
     </Table.Provider>
   ))
   .add('regular-ass table', () => (
-    <BootstrapTable striped>
+    <table>
       <thead>
         <tr>
           <th>Header 1</th>
@@ -299,5 +375,5 @@ storiesOf('Table', module)
           <td>Cell 3</td>
         </tr>
       </tbody>
-    </BootstrapTable>
+    </table>
   ))

@@ -3,8 +3,9 @@ import Cell from './Cell'
 import Footer from './Footer'
 import Header from './Header'
 import PageButton from './PageButton'
-import PageList from './PageList'
+import PageInput from './PageInput'
 import Pagination from './Pagination'
+import PerPage from './PerPage'
 import Provider from './Provider'
 import Row from './Row'
 import Search from './Search'
@@ -17,8 +18,9 @@ const Components = {
   Footer,
   Header,
   PageButton,
-  PageList,
+  PageInput,
   Pagination,
+  PerPage,
   Provider,
   Row,
   Search,
@@ -33,8 +35,9 @@ const T = {
   H: Cell,
   Head: Header,
   PageButton,
-  PageList,
+  PageInput,
   Pagination,
+  PerPage,
   Provider,
   R: Row,
   Search,
@@ -51,8 +54,9 @@ export {
   Footer as TableFooter,
   Header as TableHeader,
   PageButton as TablePageButton,
-  PageList as TablePageList,
+  PageInput as TablePageInput,
   Pagination as TablePagination,
+  PerPage as TablePerPage,
   Provider as TableProvider,
   Row as TableRow,
   Search as TableSearch,
@@ -65,8 +69,9 @@ export {
   Cell as TH,
   Header as THead,
   PageButton as TPageButton,
-  PageList as TPageList,
+  PageInput as TPageInput,
   Pagination as TPagination,
+  PerPage as TPerPage,
   Provider as TProvider,
   Row as TR,
   Search as TSearch,

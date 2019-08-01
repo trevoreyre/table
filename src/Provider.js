@@ -57,6 +57,12 @@ function reducer(state, action) {
         ...state,
         page: action.page,
       }
+    case 'changePerPage':
+      return {
+        ...state,
+        perPage: action.perPage,
+        page: 1,
+      }
     default:
       return state
   }
