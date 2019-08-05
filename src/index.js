@@ -1,5 +1,6 @@
 import Body from './Body'
 import Cell from './Cell'
+import Checkbox from './Checkbox'
 import Footer from './Footer'
 import Header from './Header'
 import PageButton from './PageButton'
@@ -15,6 +16,7 @@ import Table from './Table'
 const Components = {
   Body,
   Cell,
+  Checkbox,
   Footer,
   Header,
   PageButton,
@@ -30,6 +32,7 @@ const Components = {
 
 const T = {
   Body,
+  Checkbox,
   D: Cell,
   Foot: Footer,
   H: Cell,
@@ -51,6 +54,7 @@ export {
   // Component names
   Body as TableBody,
   Cell as TableCell,
+  Checkbox as TableCheckbox,
   Footer as TableFooter,
   Header as TableHeader,
   PageButton as TablePageButton,
@@ -64,6 +68,7 @@ export {
   Table,
   // HTML names
   Body as TBody,
+  Checkbox as TCheckbox,
   Cell as TD,
   Footer as TFoot,
   Cell as TH,

@@ -63,10 +63,10 @@ const Pagination = props => {
     return ctx.totalPages === 1 ? null : (
       <As {...other}>
         <PageButton value="prev">{'<'}</PageButton>
-        {pageList.map(value => {
-          if (value === '...') return <Ellipses />
+        {pageList.map((value, i) => {
+          if (value === '...') return <Ellipses key={value + i} />
           return (
-            <PageButton value={value}>
+            <PageButton key={value} value={value}>
               {ctx.page === value ? <strong>{value}</strong> : value}
             </PageButton>
           )
