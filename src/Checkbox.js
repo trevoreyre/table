@@ -2,44 +2,39 @@ import React, { useContext } from 'react'
 import { TableContext, LevelContext } from './Context'
 
 const Checkbox = props => {
-  const { as: As = 'input', value, ...other } = props
+  const { as: As = 'input', data, value, ...other } = props
   const ctx = useContext(TableContext)
   const level = useContext(LevelContext)
   const isHeader = level === 'header'
 
   const handleChange = event => {
-    const { checked, value: newValue } = event.target
+    const checked = event.target.checked
     if (isHeader && checked) {
-      ctx.dispatch({ type: 'selectAll' })
+      ctx.dispatch({ type: 'selectAll', value })
     } else if (isHeader && !checked) {
-      ctx.dispatch({ type: 'selectNone' })
+      ctx.dispatch({ type: 'selectNone', value })
     } else {
-      ctx.dispatch({ type: 'select', value: newValue, checked })
+      ctx.dispatch({ type: 'select', value, checked })
     }
   }
 
   const checkDeterminate = el => {
-    if (el && isHeader) {
-      if (!el.checked) {
-        el.indeterminate = ctx.selected.length > 0
-        // console.log(
-        //   'el.indeterminate:',
-        //   ctx.selected.length > 0,
-        //   ctx.selected.length
-        // )
-      }
+    if (isHeader && !el.checked) {
+      el.indeterminate =
+        ctx.data.some(item => ctx.selected.includes(item[value])) &&
+        !ctx.data.every(item => ctx.selected.includes(item[value]))
     }
   }
 
   const checked = isHeader
-    ? ctx.selected.length === ctx.data.length
-    : ctx.selected.includes(String(value))
+    ? ctx.data.every(item => ctx.selected.includes(item[value]))
+    : ctx.selected.includes(value)
 
   return (
     <As
       type="checkbox"
       checked={checked}
-      ref={checkDeterminate}
+      ref={el => el && checkDeterminate(el)}
       value={value}
       onChange={handleChange}
       {...other}

@@ -57,7 +57,6 @@ const getDataAndPagination = ({
   const totalPages = Math.ceil(data.length / perPage)
 
   if (page && perPage) {
-    console.log({ page, perPage })
     data = data.slice((page - 1) * perPage, page * perPage)
   }
 
@@ -111,12 +110,21 @@ function reducer(state, action) {
     case 'selectAll':
       return {
         ...state,
-        selected: state.data.map(item => item[action.value]),
+        selected: [
+          ...state.selected.filter(
+            selectedItem =>
+              !state.data.map(item => item[action.value]).includes(selectedItem)
+          ),
+          ...state.data.map(item => item[action.value]),
+        ],
       }
     case 'selectNone':
       return {
         ...state,
-        selected: [],
+        selected: state.selected.filter(
+          selectedItem =>
+            !state.data.map(item => item[action.value]).includes(selectedItem)
+        ),
       }
     default:
       return state
@@ -140,16 +148,6 @@ const Provider = props => {
     ...startState,
     ...getDataAndPagination(startState),
   })
-
-  // let filteredData = getFilteredData(state)
-  // const totalPages = getTotalPages({ ...state, data: filteredData })
-  // const data =
-  //   state.page && state.perPage
-  //     ? filteredData.slice(
-  //         (state.page - 1) * state.perPage,
-  //         state.page * state.perPage
-  //       )
-  //     : filteredData
 
   return (
     <TableContext.Provider

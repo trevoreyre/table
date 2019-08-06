@@ -1,5 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { State, Store } from '@sambego/storybook-state'
 import {
   Pagination as BSPagination,
   Table as BSTable,
@@ -23,6 +24,10 @@ import {
 } from '@material-ui/icons'
 import users from './MOCK_DATA.json'
 import Table from './index'
+
+const store = new Store({
+  users,
+})
 
 storiesOf('Table', module)
   .add('default', () => (
@@ -216,7 +221,7 @@ storiesOf('Table', module)
             users.map(user => (
               <Table.Row key={user.id}>
                 <Table.Cell>
-                  <Table.Checkbox value={user.id} />
+                  <Table.Checkbox value={user.id} data={user} selector="id" />
                 </Table.Cell>
                 <Table.Cell>{user.name}</Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
@@ -228,6 +233,57 @@ storiesOf('Table', module)
       </Table.Table>
       <Table.Pagination />
     </Table.Provider>
+  ))
+  .add('inline action', () => (
+    <State store={store}>
+      {({ users: stateUsers }) => {
+        const handleClickDelete = user => event => {
+          if (
+            window.confirm(`Do you want to delete ${user.name || user.id}?`)
+          ) {
+            store.set({ users: stateUsers.filter(u => u.id !== user.id) })
+          }
+        }
+        return (
+          <Table.Provider data={stateUsers} perPage={10}>
+            <Table.Search />
+            <Table.Table>
+              <Table.Header>
+                <Table.Row>
+                  <Table.Cell sortBy="name">
+                    Name <Table.SortIcon />
+                  </Table.Cell>
+                  <Table.Cell sortBy="email">
+                    Email <Table.SortIcon />
+                  </Table.Cell>
+                  <Table.Cell sortBy="ipAddress">
+                    IP Address <Table.SortIcon />
+                  </Table.Cell>
+                  <Table.Cell />
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {users =>
+                  users.map(user => (
+                    <Table.Row key={user.id}>
+                      <Table.Cell>{user.name}</Table.Cell>
+                      <Table.Cell>{user.email}</Table.Cell>
+                      <Table.Cell>{user.ipAddress}</Table.Cell>
+                      <Table.Cell>
+                        <button onClick={handleClickDelete(user)}>
+                          Delete
+                        </button>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                }
+              </Table.Body>
+            </Table.Table>
+            <Table.Pagination />
+          </Table.Provider>
+        )
+      }}
+    </State>
   ))
   .add('custom cell', () => (
     <Table.Provider data={users}>
@@ -270,7 +326,12 @@ storiesOf('Table', module)
   ))
   .add('material-ui table', () => (
     <Table.Provider data={users} perPage={10}>
-      <Table.Search as={MuiInput} placeholder="Search" />
+      <Table.Search
+        as={MuiInput}
+        placeholder="Search"
+        style={{ width: '300px', marginBottom: '16px' }}
+        margin="dense"
+      />
       <Table.Table as={MuiTable}>
         <Table.Header as={MuiTableHead}>
           <Table.Row as={MuiTableRow}>
@@ -298,7 +359,7 @@ storiesOf('Table', module)
         </Table.Body>
       </Table.Table>
       <Table.Pagination style={{ marginTop: '24px' }}>
-        {({ page, perPage, totalPages }) => (
+        {({ page, totalPages }) => (
           <>
             <span style={{ marginRight: '16px', fontSize: '14px' }}>
               Rows per page:
@@ -313,15 +374,8 @@ storiesOf('Table', module)
               <option value={25}>25</option>
               <option value={50}>50</option>
             </Table.PerPage>
-            <span
-              style={{
-                display: 'inline-block',
-                width: '120px',
-                fontSize: '14px',
-              }}
-            >
-              {(page - 1) * perPage + 1}-{page * perPage} of{' '}
-              {totalPages * perPage}
+            <span style={{ marginRight: '16px', fontSize: '14px' }}>
+              {page} of {totalPages}
             </span>
             <Table.PageButton as={MuiIconButton} value="first">
               <FirstPage />
