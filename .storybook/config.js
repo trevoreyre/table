@@ -9,8 +9,4 @@ addParameters({
   }
 })
 
-const loadStories = () => {
-  require('../src/Table.stories.js')
-}
-
-configure(loadStories, module)
+configure(require.context('../src/stories', true, /\.js$/), module)
