@@ -1,17 +1,26 @@
-import React, { useReducer } from 'react'
-import cloneDeep from 'lodash/cloneDeep'
-import orderBy from 'lodash/orderBy'
+import React, { useEffect, useReducer } from 'react'
+import PropTypes from 'prop-types'
+import { compose, curry, orderBy } from 'lodash/fp'
 import Fuse from 'fuse.js'
-import { TableContext } from './Context'
+import { TableContext, DispatchContext } from './Context'
+
+// CONTROLLABLE
+// [ ] data
+// [ ] direction
+// [ ] page
+// [ ] perPage
+// [ ] search ???
+// [ ] sortBy
+// [ ] selected
 
 const initialState = {
   data: [],
   direction: 'asc',
   fuse: { search: () => [] },
   initialData: [],
-  page: undefined,
+  page: 1,
   perPage: undefined,
-  search: '',
+  search: undefined,
   sortBy: undefined,
   selected: [],
 }
@@ -24,82 +33,101 @@ const searchOptions = {
   minMatchCharLength: 1,
 }
 
-const getFilteredData = ({ direction, fuse, initialData, search, sortBy }) => {
-  let data = cloneDeep(initialData)
-  if (search) {
-    data = fuse.search(search)
+const initialize = props => {
+  console.log('initialize', props)
+  const state = {
+    ...initialState,
+    ...props,
+    initialData: props.data,
+    fuse: new Fuse(props.data, {
+      ...searchOptions,
+      keys: Object.keys(props.data[0]),
+    }),
   }
-  if (sortBy) {
-    data = orderBy(data, sortBy, direction)
+  return {
+    ...state,
+    ...getData(state),
   }
-  return data
 }
 
-const getTotalPages = ({ data, perPage }) => Math.ceil(data.length / perPage)
+const searchData = curry(({ search, fuse }, { data, ...other }) => {
+  const newData = search ? fuse.search(search) : data
+  return { ...other, data: newData }
+})
 
-const getDataAndPagination = ({
-  direction,
-  fuse,
-  initialData,
-  page,
-  perPage,
-  search,
-  sortBy,
-}) => {
-  let data = cloneDeep(initialData)
-  if (search) {
-    data = fuse.search(search)
-  }
-  if (sortBy) {
-    data = orderBy(data, sortBy, direction)
-  }
+const sortData = curry(({ sortBy, direction }, { data, ...other }) => {
+  const newData = orderBy(sortBy, direction, data)
+  return { ...other, data: newData }
+})
 
-  const totalPages = Math.ceil(data.length / perPage)
+const paginateData = curry(({ page, perPage }, { data, ...other }) => {
+  const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
+  const newPage = Math.min(totalPages, Math.max(1, page))
+  const newData =
+    newPage && perPage
+      ? data.slice((newPage - 1) * perPage, newPage * perPage)
+      : data
+  return { ...other, data: newData, page: newPage, totalPages }
+})
 
-  if (page && perPage) {
-    data = data.slice((page - 1) * perPage, page * perPage)
-  }
-
-  return { data, totalPages }
+const getData = ({ initialData, ...state }) => {
+  return compose(
+    paginateData(state),
+    sortData(state),
+    searchData(state)
+  )({ data: initialData })
 }
 
 function reducer(state, action) {
   console.log({ action, state })
 
   switch (action.type) {
-    case 'sort':
-      return {
+    case 'updateData':
+      return initialize({ ...state, data: action.data })
+    case 'sort': {
+      const newState = {
         ...state,
         sortBy: action.sortBy,
         direction: action.direction,
         page: 1,
-        ...getDataAndPagination({
-          ...state,
-          sortBy: action.sortBy,
-          direction: action.direction,
-          page: 1,
-        }),
       }
-    case 'search':
       return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
+    case 'search': {
+      const newState = {
         ...state,
         search: action.search,
         page: 1,
-        ...getDataAndPagination({ ...state, search: action.search, page: 1 }),
       }
-    case 'changePage':
       return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
+    case 'changePage': {
+      const newState = {
         ...state,
         page: action.page,
-        ...getDataAndPagination({ ...state, page: action.page }),
       }
-    case 'changePerPage':
       return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
+    case 'changePerPage': {
+      const newState = {
         ...state,
         perPage: action.perPage,
         page: 1,
-        ...getDataAndPagination({ ...state, perPage: action.perPage, page: 1 }),
       }
+      return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
     case 'select':
       return {
         ...state,
@@ -126,43 +154,48 @@ function reducer(state, action) {
             !state.data.map(item => item[action.value]).includes(selectedItem)
         ),
       }
+    case 'selectClear':
+      return {
+        ...state,
+        selected: [],
+      }
     default:
       return state
   }
 }
 
 const Provider = props => {
-  const { children, data: dataProp = [{}], page = 1, perPage } = props
+  const { children, ...other } = props
 
-  const startState = {
-    ...initialState,
-    initialData: dataProp,
-    page,
-    perPage,
-    fuse: new Fuse(dataProp, {
-      ...searchOptions,
-      keys: Object.keys(dataProp[0]),
-    }),
-  }
-  const [state, dispatch] = useReducer(reducer, {
-    ...startState,
-    ...getDataAndPagination(startState),
-  })
+  const [state, dispatch] = useReducer(reducer, other, initialize)
+  console.log({ state })
+
+  useEffect(() => {
+    dispatch({ type: 'updateData', data: other.data })
+  }, [other.data])
 
   return (
-    <TableContext.Provider
-      value={{
-        ...state,
-        // data,
-        // totalPages,
-        dispatch,
-      }}
-    >
-      {children}
+    <TableContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        {typeof children === 'function' ? children(state, dispatch) : children}
+      </DispatchContext.Provider>
     </TableContext.Provider>
   )
 }
 
-Provider.displayName = 'Table.Provider'
+Provider.propTypes = {
+  data: PropTypes.any,
+  direction: PropTypes.oneOf(['asc', 'desc']),
+  defaultDirection: PropTypes.oneOf(['asc', 'desc']),
+  page: PropTypes.number,
+  defaultPage: PropTypes.number,
+  perPage: PropTypes.number,
+  defaultPerPage: PropTypes.number,
+  // search: undefined,
+  sortBy: PropTypes.string,
+  defaultSortBy: PropTypes.string,
+  selected: PropTypes.array,
+  defaultSelected: PropTypes.array,
+}
 
 export default Provider

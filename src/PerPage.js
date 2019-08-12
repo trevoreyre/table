@@ -1,19 +1,20 @@
-import React, { useContext } from 'react'
-import { TableContext } from './Context'
+import React from 'react'
+import { useTableState, useTableDispatch } from './Context'
 
 const PerPage = props => {
   const { as: As = 'select', children, onChange, ...other } = props
-  const ctx = useContext(TableContext)
+  const state = useTableState()
+  const dispatch = useTableDispatch()
 
   const handleChange = event => {
     const perPage = parseInt(event.target.value, 10)
-    ctx.dispatch({ type: 'changePerPage', perPage })
+    dispatch({ type: 'changePerPage', perPage })
 
     if (onChange) onChange(event)
   }
 
   return (
-    <As onChange={handleChange} value={ctx.perPage} {...other}>
+    <As onChange={handleChange} value={state.perPage} {...other}>
       {children}
     </As>
   )

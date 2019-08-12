@@ -40,7 +40,7 @@ export const pagination = () => (
 )
 
 export const customPagination = () => (
-  <Table.Provider data={users} page={1} perPage={10}>
+  <Table.Provider data={users} perPage={10}>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -69,7 +69,7 @@ export const customPagination = () => (
       </Table.Body>
     </Table.Table>
     <Table.Pagination>
-      {({ page, totalPages }) => (
+      {({ totalPages }) => (
         <>
           <Table.PageButton value="first">{'<<'}</Table.PageButton>
           <Table.PageButton value="prev">{'<'}</Table.PageButton>

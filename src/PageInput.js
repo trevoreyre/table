@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { TableContext } from './Context'
+import React, { useEffect, useState } from 'react'
+import { useTableState, useTableDispatch } from './Context'
 
 const PageInput = props => {
   const { as: As = 'input', onBlur, onChange, onKeyDown, ...other } = props
-  const ctx = useContext(TableContext)
-  const [page, setPage] = useState(ctx.page)
+  const state = useTableState()
+  const dispatch = useTableDispatch()
+  const [page, setPage] = useState(state.page)
   useEffect(() => {
-    setPage(ctx.page)
-  }, [ctx.page])
+    setPage(state.page)
+  }, [state.page])
 
   const submit = newPage => {
-    ctx.dispatch({
+    dispatch({
       type: 'changePage',
-      page: Math.min(ctx.totalPages, Math.max(1, newPage)),
+      page: newPage,
     })
   }
 
@@ -26,27 +27,25 @@ const PageInput = props => {
 
   const handleKeyDown = event => {
     const { key } = event
-    const newPage = parseInt(event.target.value, 10)
 
     switch (key) {
       case 'Up':
       case 'ArrowUp':
-        ctx.dispatch({
-          type: 'changePage',
-          page: Math.min(page + 1, ctx.totalPages),
-        })
+        dispatch({ type: 'changePage', page: page + 1 })
         break
       case 'Down':
       case 'ArrowDown':
-        ctx.dispatch({ type: 'changePage', page: Math.max(page - 1, 1) })
+        dispatch({ type: 'changePage', page: page - 1 })
         break
       case 'Esc':
       case 'Escape':
-        setPage(ctx.page)
+        setPage(state.page)
         break
-      case 'Enter':
+      case 'Enter': {
+        const newPage = parseInt(event.target.value, 10)
         submit(newPage)
         break
+      }
       default:
     }
 
@@ -56,7 +55,7 @@ const PageInput = props => {
   const handleBlur = event => {
     const { value } = event.target
     if (value === '') {
-      setPage(ctx.page)
+      setPage(state.page)
     } else {
       const newPage = parseInt(event.target.value, 10)
       submit(newPage)

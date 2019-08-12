@@ -1,12 +1,15 @@
-import React, { useContext } from 'react'
-import { TableContext } from './Context'
+import React from 'react'
+import { useTableDispatch } from './Context'
 
 const Search = props => {
-  const { as: As = 'input', ...other } = props
-  const ctx = useContext(TableContext)
+  const { as: As = 'input', onChange, ...other } = props
+  const dispatch = useTableDispatch()
 
-  const handleChange = event =>
-    ctx.dispatch({ type: 'search', search: event.target.value })
+  const handleChange = event => {
+    dispatch({ type: 'search', search: event.target.value })
+
+    if (onChange) onChange(event)
+  }
 
   return <As onChange={handleChange} {...other} />
 }

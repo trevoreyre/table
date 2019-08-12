@@ -30,28 +30,8 @@ const Components = {
   Table,
 }
 
-const T = {
-  Body,
-  Checkbox,
-  D: Cell,
-  Foot: Footer,
-  H: Cell,
-  Head: Header,
-  PageButton,
-  PageInput,
-  Pagination,
-  PerPage,
-  Provider,
-  R: Row,
-  Search,
-  SortIcon,
-  Table,
-}
-
 export default Components
 export {
-  T,
-  // Component names
   Body as TableBody,
   Cell as TableCell,
   Checkbox as TableCheckbox,
@@ -66,19 +46,4 @@ export {
   Search as TableSearch,
   SortIcon as TableSortIcon,
   Table,
-  // HTML names
-  Body as TBody,
-  Checkbox as TCheckbox,
-  Cell as TD,
-  Footer as TFoot,
-  Cell as TH,
-  Header as THead,
-  PageButton as TPageButton,
-  PageInput as TPageInput,
-  Pagination as TPagination,
-  PerPage as TPerPage,
-  Provider as TProvider,
-  Row as TR,
-  Search as TSearch,
-  SortIcon as TSortIcon,
 }

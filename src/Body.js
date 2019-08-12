@@ -1,15 +1,16 @@
-import React, { useContext } from 'react'
-import { TableContext, LevelContext } from './Context'
+import React from 'react'
+import { LevelContext, useTableState } from './Context'
 
 const Body = props => {
   const { as: As = 'tbody', children, ...other } = props
-  const ctx = useContext(TableContext)
-  console.log('ctx:', ctx)
+  const state = useTableState()
 
   return (
     <LevelContext.Provider value="body">
       <As {...other}>
-        {typeof children === 'function' ? children(ctx.data) : children}
+        {typeof children === 'function' && state.data
+          ? children(state.data)
+          : children}
       </As>
     </LevelContext.Provider>
   )
