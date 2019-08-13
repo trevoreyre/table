@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react'
 const TableContext = createContext()
 const DispatchContext = createContext()
 const LevelContext = createContext('body')
-const SortContext = createContext({ active: false, direction: 'asc' })
+const SortContext = createContext({ active: false, sortDirection: 'asc' })
 
 const useTableState = () => {
   const context = useContext(TableContext)

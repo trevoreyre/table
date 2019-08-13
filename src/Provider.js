@@ -5,25 +5,28 @@ import Fuse from 'fuse.js'
 import { TableContext, DispatchContext } from './Context'
 
 // CONTROLLABLE
-// [ ] data
-// [ ] direction
 // [ ] page
 // [ ] perPage
-// [ ] search ???
+// [ ] searchFor
 // [ ] sortBy
+// [ ] sortsortDirection
 // [ ] selected
 
-const initialState = {
-  data: [],
-  direction: 'asc',
-  fuse: { search: () => [] },
-  initialData: [],
-  page: 1,
-  perPage: undefined,
-  search: undefined,
-  sortBy: undefined,
-  selected: [],
-}
+// Should the following be controllable?
+//
+// --- data ---
+//
+// Does controlled data prop make sense? In that case none of the sorting/filtering components
+// or options would have any effect since they can't change the value of data. And since the
+// table would render data exactly as is, you could just render the table yourself instead.
+//
+// One possible use case - you control data and all values of context, but you want to use
+// table components that automatically read those values out of context, without having to
+// set them yourself.
+//
+// Possible props
+//
+// sort - Function called when clicking a sortable Cell
 
 const searchOptions = {
   threshold: 0.3,
@@ -33,16 +36,37 @@ const searchOptions = {
   minMatchCharLength: 1,
 }
 
+const defaultSearch = ({ searchFor, searchKeys, data }) => {
+  console.log('defaultSearch:', { searchFor, searchKeys })
+  if (searchFor) {
+    const fuse = new Fuse(data, {
+      ...searchOptions,
+      keys: searchKeys || Object.keys(data[0]),
+    })
+    return fuse.search(searchFor)
+  }
+  return data
+}
+
+const initialState = {
+  data: [],
+  sortDirection: 'asc',
+  initialData: [],
+  page: 1,
+  perPage: undefined,
+  search: defaultSearch,
+  searchFor: undefined,
+  searchKeys: undefined,
+  sortBy: undefined,
+  selected: [],
+}
+
 const initialize = props => {
   console.log('initialize', props)
   const state = {
     ...initialState,
     ...props,
     initialData: props.data,
-    fuse: new Fuse(props.data, {
-      ...searchOptions,
-      keys: Object.keys(props.data[0]),
-    }),
   }
   return {
     ...state,
@@ -50,13 +74,20 @@ const initialize = props => {
   }
 }
 
-const searchData = curry(({ search, fuse }, { data, ...other }) => {
-  const newData = search ? fuse.search(search) : data
-  return { ...other, data: newData }
-})
+const searchData = curry(
+  ({ search, searchFor, searchKeys }, { data, ...other }) => {
+    return {
+      ...other,
+      data: search({ searchFor, searchKeys, data }),
+    }
+  }
+)
 
-const sortData = curry(({ sortBy, direction }, { data, ...other }) => {
-  const newData = orderBy(sortBy, direction, data)
+const sortData = curry(({ sortBy, sortDirection }, { data, ...other }) => {
+  const lowerCaseItem = item =>
+    typeof item[sortBy] === 'string' ? item[sortBy].toLowerCase() : item[sortBy]
+
+  const newData = orderBy(lowerCaseItem, sortDirection, data)
   return { ...other, data: newData }
 })
 
@@ -88,7 +119,7 @@ function reducer(state, action) {
       const newState = {
         ...state,
         sortBy: action.sortBy,
-        direction: action.direction,
+        sortDirection: action.sortDirection,
         page: 1,
       }
       return {
@@ -99,7 +130,7 @@ function reducer(state, action) {
     case 'search': {
       const newState = {
         ...state,
-        search: action.search,
+        searchFor: action.searchFor,
         page: 1,
       }
       return {
@@ -185,13 +216,16 @@ const Provider = props => {
 
 Provider.propTypes = {
   data: PropTypes.any,
-  direction: PropTypes.oneOf(['asc', 'desc']),
-  defaultDirection: PropTypes.oneOf(['asc', 'desc']),
+  sortDirection: PropTypes.oneOf(['asc', 'desc']),
+  defaultSortDirection: PropTypes.oneOf(['asc', 'desc']),
   page: PropTypes.number,
   defaultPage: PropTypes.number,
   perPage: PropTypes.number,
   defaultPerPage: PropTypes.number,
-  // search: undefined,
+  search: PropTypes.func,
+  searchFor: PropTypes.string,
+  defaultSearchFor: PropTypes.string,
+  searchKeys: PropTypes.array,
   sortBy: PropTypes.string,
   defaultSortBy: PropTypes.string,
   selected: PropTypes.array,

@@ -17,6 +17,9 @@ export const sorting = () => (
           <Table.Cell sortBy="email">
             Email <Table.SortIcon />
           </Table.Cell>
+          <Table.Cell sortBy="age">
+            Age <Table.SortIcon />
+          </Table.Cell>
           <Table.Cell sortBy="ipAddress">
             IP Address <Table.SortIcon />
           </Table.Cell>
@@ -28,6 +31,7 @@ export const sorting = () => (
             <Table.Row key={user.id}>
               <Table.Cell>{user.name}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.age}</Table.Cell>
               <Table.Cell>{user.ipAddress}</Table.Cell>
             </Table.Row>
           ))

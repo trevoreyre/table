@@ -20,9 +20,11 @@ const Cell = props => {
 
   const handleClick = event => {
     if (sortBy) {
-      const direction =
-        state.sortBy === sortBy && state.direction === 'asc' ? 'desc' : 'asc'
-      dispatch({ type: 'sort', sortBy, direction })
+      const sortDirection =
+        state.sortBy === sortBy && state.sortDirection === 'asc'
+          ? 'desc'
+          : 'asc'
+      dispatch({ type: 'sort', sortBy, sortDirection })
     }
     if (onClick) {
       onClick(event)
@@ -31,7 +33,7 @@ const Cell = props => {
 
   const contextValue = {
     active: sortBy ? state.sortBy === sortBy : false,
-    direction: sortBy ? state.direction : 'asc',
+    sortDirection: sortBy ? state.sortDirection : 'asc',
   }
 
   return (

@@ -6,7 +6,7 @@ const Search = props => {
   const dispatch = useTableDispatch()
 
   const handleChange = event => {
-    dispatch({ type: 'search', search: event.target.value })
+    dispatch({ type: 'search', searchFor: event.target.value })
 
     if (onChange) onChange(event)
   }

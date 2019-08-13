@@ -19,7 +19,7 @@
   "scripts": {
     "start": "start-storybook -p 5000",
     "build": "build-storybook -o docs",
-    "lint": "eslint --fix ."
+    "lint": "eslint --ignore-path .gitignore --ignore-pattern 'docs/' --fix ."
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -49,6 +49,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.6.1",
+    "fuzzysort": "^1.1.4",
     "husky": "^3.0.1",
     "lint-staged": "^9.2.1",
     "prettier": "^1.18.2",
