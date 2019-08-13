@@ -1,3 +1,5 @@
-# table
+# @trevoreyre/table-react
 
-A data table. Maybe.
+A React data table component. Currently under development.
+
+[View in-progress examples](https://trevoreyre.github.io/table/index.html)
