@@ -26,6 +26,9 @@ const PageButton = props => {
     }
 
     dispatch({ type: 'changePage', page })
+    if (state.onChangePage) {
+      state.onChangePage(page)
+    }
     if (onClick) {
       onClick(event)
     }

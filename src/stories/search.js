@@ -42,9 +42,9 @@ export const search = () => (
 export const customSearch = () => {
   const [searchResults, setSearchResults] = useState([])
 
-  const search = ({ searchFor, searchKeys, data }) => {
-    if (searchFor) {
-      const results = fuzzysort.go(searchFor, data, { keys: searchKeys })
+  const search = ({ searchValue, searchKeys, data }) => {
+    if (searchValue) {
+      const results = fuzzysort.go(searchValue, data, { keys: searchKeys })
       setSearchResults(results)
       return results.map(result => result.obj)
     } else {
