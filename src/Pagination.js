@@ -1,18 +1,7 @@
-import React, { useContext } from 'react'
-import { TableContext } from './Context'
+import React, { useEffect, useState } from 'react'
+import { useComponentWillMount } from './util'
+import { useTableState, useTableDispatch } from './Context'
 import PageButton from './PageButton'
-
-const Ellipses = () => (
-  <span
-    style={{
-      display: 'inline-block',
-      width: '40px',
-      textAlign: 'center',
-    }}
-  >
-    ...
-  </span>
-)
 
 const getFirstLastPage = ({ page, length, totalPages }) => {
   const middlePage = Math.ceil(length / 2)
@@ -39,39 +28,79 @@ const getFirstLastPage = ({ page, length, totalPages }) => {
 }
 
 const Pagination = props => {
-  const ctx = useContext(TableContext)
-  const { as: As = 'div', children, length = 7, ...other } = props
+  const {
+    as: As = 'div',
+    children,
+    defaultPage,
+    defaultPerPage,
+    length = 7,
+    page,
+    perPage,
+    ...other
+  } = props
+  const state = useTableState()
+  const dispatch = useTableDispatch()
+
+  useComponentWillMount(() => {
+    if (defaultPage !== undefined || defaultPerPage !== undefined) {
+      dispatch({
+        type: 'syncDefaultProps',
+        defaultProps: {
+          ...(defaultPage !== undefined && { defaultPage }),
+          ...(defaultPerPage !== undefined && { defaultPerPage }),
+        },
+      })
+    }
+  })
+  useEffect(() => {
+    if (page !== undefined || perPage !== undefined) {
+      dispatch({
+        type: 'syncProps',
+        props: {
+          ...(page !== undefined && { page }),
+          ...(perPage !== undefined && { perPage }),
+        },
+      })
+    }
+  }, [dispatch, page, perPage])
 
   const { firstPage, lastPage } = getFirstLastPage({
     length,
-    page: ctx.page,
-    totalPages: ctx.totalPages,
+    page: state.page,
+    totalPages: state.totalPages,
   })
 
   let pageList = []
-  if (ctx.totalPages > 1) {
+  if (state.totalPages > 1) {
     pageList.push(1)
     if (firstPage > 2) pageList.push('...')
     pageList = pageList.concat(
       Array.from({ length: lastPage - firstPage + 1 }, (_, i) => i + firstPage)
     )
-    if (lastPage < ctx.totalPages - 1) pageList.push('...')
-    pageList.push(ctx.totalPages)
+    if (lastPage < state.totalPages - 1) pageList.push('...')
+    pageList.push(state.totalPages)
   }
 
+  console.log('Pagination.render')
+
   if (children === undefined) {
-    return ctx.totalPages === 1 ? null : (
+    return state.totalPages === 1 ? null : (
       <As {...other}>
-        <PageButton value="prev">{'<'}</PageButton>
+        <PageButton value="prev">Previous</PageButton>
         {pageList.map((value, i) => {
-          if (value === '...') return <Ellipses key={value + i} />
+          if (value === '...')
+            return (
+              <PageButton key={value + i} disabled>
+                ...
+              </PageButton>
+            )
           return (
             <PageButton key={value} value={value}>
-              {ctx.page === value ? <strong>{value}</strong> : value}
+              {state.page === value ? <strong>{value}</strong> : value}
             </PageButton>
           )
         })}
-        <PageButton value="next">{'>'}</PageButton>
+        <PageButton value="next">Next</PageButton>
       </As>
     )
   }
@@ -80,10 +109,10 @@ const Pagination = props => {
     <As {...other}>
       {typeof children === 'function'
         ? children({
-            page: ctx.page,
+            page: state.page,
             pageList,
-            perPage: ctx.perPage,
-            totalPages: ctx.totalPages,
+            perPage: state.perPage,
+            totalPages: state.totalPages,
           })
         : children}
     </As>

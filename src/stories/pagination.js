@@ -7,7 +7,7 @@ export default {
 }
 
 export const pagination = () => (
-  <Table.Provider data={users} perPage={10}>
+  <Table.Provider data={users}>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -35,12 +35,12 @@ export const pagination = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination />
+    <Table.Pagination perPage={10} />
   </Table.Provider>
 )
 
 export const defaultPage = () => (
-  <Table.Provider data={users} perPage={10} defaultPage={11}>
+  <Table.Provider data={users}>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -68,7 +68,7 @@ export const defaultPage = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination />
+    <Table.Pagination perPage={10} defaultPage={11} />
   </Table.Provider>
 )
 defaultPage.story = { name: 'default page' }
@@ -78,42 +78,49 @@ export const controlled = () => {
 
   const handleChangePage = newPage => setPage(newPage)
 
+  const handleChange = event => setPage(parseInt(event.target.value, 10))
+
   return (
-    <Table.Provider
-      data={users}
-      perPage={10}
-      page={page}
-      onChangePage={handleChangePage}
-    >
-      <Table.Search />
-      <Table.Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.Cell sortBy="name">
-              Name <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="email">
-              Email <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="ipAddress">
-              IP Address <Table.SortIcon />
-            </Table.Cell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {users =>
-            users.map(user => (
-              <Table.Row key={user.id}>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.ipAddress}</Table.Cell>
-              </Table.Row>
-            ))
-          }
-        </Table.Body>
-      </Table.Table>
-      <Table.Pagination />
-    </Table.Provider>
+    <>
+      <label>
+        Page
+        <input type="number" value={page || ''} onChange={handleChange} />
+      </label>
+      <Table.Provider
+        data={users}
+        perPage={10}
+        page={page || 1}
+        onChangePage={handleChangePage}
+      >
+        <Table.Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.Cell sortBy="name">
+                Name <Table.SortIcon />
+              </Table.Cell>
+              <Table.Cell sortBy="email">
+                Email <Table.SortIcon />
+              </Table.Cell>
+              <Table.Cell sortBy="ipAddress">
+                IP Address <Table.SortIcon />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {users =>
+              users.map(user => (
+                <Table.Row key={user.id}>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.ipAddress}</Table.Cell>
+                </Table.Row>
+              ))
+            }
+          </Table.Body>
+        </Table.Table>
+        <Table.Pagination />
+      </Table.Provider>
+    </>
   )
 }
 

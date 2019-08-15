@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useLayoutEffect, useRef } from 'react'
 import { LevelContext, useTableState, useTableDispatch } from './Context'
 
 const Checkbox = props => {
@@ -6,12 +6,12 @@ const Checkbox = props => {
   const state = useTableState()
   const dispatch = useTableDispatch()
   const level = useContext(LevelContext)
-  const el = useRef(null)
+  const inputRef = useRef(null)
   const isHeader = level === 'header'
 
-  useEffect(() => {
-    if (isHeader && el.current) {
-      el.current.indeterminate =
+  useLayoutEffect(() => {
+    if (isHeader && inputRef.current) {
+      inputRef.current.indeterminate =
         state.data.some(item => state.selected.includes(item[value])) &&
         !state.data.every(item => state.selected.includes(item[value]))
     }
@@ -36,7 +36,7 @@ const Checkbox = props => {
     <As
       type="checkbox"
       checked={checked}
-      ref={el}
+      ref={inputRef}
       value={value}
       onChange={handleChange}
       {...other}

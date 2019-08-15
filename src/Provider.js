@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
-import { compose, curry, orderBy } from 'lodash/fp'
+import { capitalize, compose, curry, lowerFirst, orderBy } from 'lodash/fp'
 import Fuse from 'fuse.js'
 import { TableContext, DispatchContext } from './Context'
 
@@ -32,28 +32,15 @@ import { TableContext, DispatchContext } from './Context'
 // [ ] onSelectNone
 // [ ] onSelectClear
 
-// Should the following be controllable?
-//
-// --- data ---
+// Should data be controllable?
 //
 // Does controlled data prop make sense? In that case none of the sorting/filtering components
 // or options would have any effect since they can't change the value of data. And since the
 // table would render data exactly as is, you could just render the table yourself instead.
 //
 // One possible use case - you control data and all values of context, but you want to use
-// table components that automatically read those values out of context, without having to
-// set them yourself.
-//
-// Possible props
-//
-// sort - Function called when clicking a sortable Cell
-// onSort
-// onChangePerPage
-// onChangeSearchValue
-// onSelect
-// onSelectAll
-// onSelectNone
-// onSelectClear
+// table components that automatically read those values out of context, without having to set
+// them yourself. Also event handlers would be fired without you having to wire all of that up.
 
 const searchOptions = {
   threshold: 0.3,
@@ -64,7 +51,6 @@ const searchOptions = {
 }
 
 const defaultSearch = ({ searchValue, searchKeys, data }) => {
-  console.log('defaultSearch:', { searchValue, searchKeys })
   if (searchValue) {
     const fuse = new Fuse(data, {
       ...searchOptions,
@@ -75,8 +61,15 @@ const defaultSearch = ({ searchValue, searchKeys, data }) => {
   return data
 }
 
+const defaultSort = ({ sortBy, sortDirection, data }) => {
+  const lowerCaseItem = item =>
+    typeof item[sortBy] === 'string' ? item[sortBy].toLowerCase() : item[sortBy]
+  return orderBy(lowerCaseItem, sortDirection, data)
+}
+
 const initialState = {
   data: [],
+  dataIsControlled: false,
   initialData: [],
   onChangePage: undefined,
   page: 1,
@@ -84,37 +77,36 @@ const initialState = {
   perPage: undefined,
   perPageIsControlled: false,
   search: defaultSearch,
+  searchIsControlled: false,
   searchKeys: undefined,
   searchValue: undefined,
+  searchValueIsControlled: false,
   selected: [],
+  selectedIsControlled: false,
+  sort: defaultSort,
+  sortIsControlled: false,
   sortBy: undefined,
+  sortByIsControlled: false,
   sortDirection: 'asc',
+  sortDirectionIsControlled: false,
 }
 
 const initialize = props => {
-  const {
-    data,
-    defaultPage,
-    defaultPerPage,
-    onChangePage,
-    page,
-    perPage,
-  } = props
+  const state = { ...initialState }
 
-  console.log('initialize', props)
-  const state = {
-    ...initialState,
-    // ...props,
-    ...(defaultPage !== undefined ? { page: defaultPage } : {}),
-    ...(page !== undefined ? { page } : {}),
-    pageIsControlled: page !== undefined,
-    onChangePage,
-    ...(defaultPerPage !== undefined ? { perPage: defaultPerPage } : {}),
-    ...(perPage !== undefined ? { perPage } : {}),
-    perPageIsControlled: perPage !== undefined,
-    initialData: data,
-  }
-  console.log('initialized state:', state)
+  Object.keys(initialState).forEach(key => {
+    const prop = props[key]
+    const defaultProp = props[`default${capitalize(key)}`]
+
+    if (prop !== undefined) {
+      state[key] = prop
+      state[`${key}IsControlled`] = true
+    } else if (defaultProp !== undefined) {
+      state[key] = defaultProp
+    }
+  })
+  state.initialData = props.data
+
   return {
     ...state,
     ...getData(state),
@@ -130,13 +122,11 @@ const searchData = curry(
   }
 )
 
-const sortData = curry(({ sortBy, sortDirection }, { data, ...other }) => {
-  const lowerCaseItem = item =>
-    typeof item[sortBy] === 'string' ? item[sortBy].toLowerCase() : item[sortBy]
-
-  const newData = orderBy(lowerCaseItem, sortDirection, data)
-  return { ...other, data: newData }
-})
+const sortData = curry(
+  ({ sort, sortBy, sortDirection }, { data, ...other }) => {
+    return { ...other, data: sort({ sortBy, sortDirection, data }) }
+  }
+)
 
 const paginateData = curry(({ page, perPage }, { data, ...other }) => {
   const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
@@ -157,10 +147,10 @@ const getData = ({ initialData, ...state }) => {
 }
 
 function reducer(state, action) {
-  console.log({ action, state })
+  console.log(action.type, { action, state })
 
   switch (action.type) {
-    case 'syncProp':
+    case 'syncProp': {
       if (action.value === undefined) {
         return state
       }
@@ -172,6 +162,36 @@ function reducer(state, action) {
         ...newState,
         ...getData(newState),
       }
+    }
+    case 'syncProps': {
+      const newState = {
+        ...state,
+        ...action.props,
+      }
+      return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
+    case 'syncDefaultProps': {
+      const defaultProps = Object.entries(action.defaultProps).reduce(
+        (props, [key, value]) => {
+          props[lowerFirst(key.replace('default', ''))] = value
+          return props
+        },
+        {}
+      )
+      console.log('defaultProps:', defaultProps)
+      const newState = {
+        ...state,
+        ...defaultProps,
+      }
+      console.log('newState:', newState)
+      return {
+        ...newState,
+        ...getData(newState),
+      }
+    }
     case 'sort': {
       const newState = {
         ...state,
@@ -256,17 +276,37 @@ function reducer(state, action) {
 }
 
 const Provider = props => {
-  const { children, data, page, ...other } = props
+  const {
+    children,
+    page,
+    perPage,
+    searchKeys,
+    searchValue,
+    selected,
+    sortBy,
+    sortDirection,
+  } = props
 
   const [state, dispatch] = useReducer(reducer, props, initialize)
-  console.log({ state })
+  console.log('render', state)
 
   // useEffect(() => {
   //   dispatch({ type: 'syncProp', name: 'data', value: data })
   // }, [data])
   useEffect(() => {
-    dispatch({ type: 'syncProp', name: 'page', value: page })
-  }, [page])
+    dispatch({
+      type: 'syncProps',
+      props: {
+        ...(page !== undefined && { page }),
+        ...(perPage !== undefined && { perPage }),
+        ...(searchKeys !== undefined && { searchKeys }),
+        ...(searchValue !== undefined && { searchValue }),
+        ...(sortBy !== undefined && { sortBy }),
+        ...(selected !== undefined && { selected }),
+        ...(sortDirection !== undefined && { sortDirection }),
+      },
+    })
+  }, [page, perPage, searchKeys, searchValue, selected, sortBy, sortDirection])
 
   return (
     <TableContext.Provider value={state}>
@@ -287,12 +327,20 @@ Provider.propTypes = {
   defaultSortBy: PropTypes.string,
   defaultSortDirection: PropTypes.oneOf(['asc', 'desc']),
   onChangePage: PropTypes.func,
+  onChangePerPage: PropTypes.func,
+  onSearch: PropTypes.func, // onChangeSearchValue???
+  onSelect: PropTypes.func,
+  onSelectAll: PropTypes.func,
+  onSelectClear: PropTypes.func,
+  onSelectNone: PropTypes.func,
+  onSort: PropTypes.func,
   page: PropTypes.number,
   perPage: PropTypes.number,
   search: PropTypes.func,
   searchKeys: PropTypes.array,
   searchValue: PropTypes.string,
   selected: PropTypes.array,
+  sort: PropTypes.func,
   sortBy: PropTypes.string,
   sortDirection: PropTypes.oneOf(['asc', 'desc']),
 }
