@@ -7,7 +7,7 @@ export default {
   title: 'Basic|Actions',
 }
 
-export const inline = () => {
+export const Inline = () => {
   const [users, setUsers] = useState(usersData)
 
   const handleClickDelete = user => () => {
@@ -54,7 +54,7 @@ export const inline = () => {
   )
 }
 
-export const global = () => {
+export const Global = () => {
   const [users, setUsers] = useState(usersData)
   const [open, setOpen] = useState(false)
 

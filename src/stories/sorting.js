@@ -6,7 +6,7 @@ export default {
   title: 'Basic|Sorting',
 }
 
-export const sorting = () => (
+export const Sorting = () => (
   <Table.Provider data={users}>
     <Table.Table>
       <Table.Header>

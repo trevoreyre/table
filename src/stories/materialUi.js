@@ -22,7 +22,7 @@ export default {
   title: 'Styling|material-ui',
 }
 
-export const materialUi = () => (
+export const MaterialUi = () => (
   <Table.Provider data={users} perPage={10}>
     <Table.Search
       as={MuiInput}
@@ -93,4 +93,4 @@ export const materialUi = () => (
   </Table.Provider>
 )
 
-materialUi.story = { name: 'material-ui' }
+MaterialUi.story = { name: 'material-ui' }

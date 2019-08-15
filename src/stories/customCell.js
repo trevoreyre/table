@@ -6,7 +6,7 @@ export default {
   title: 'Basic|Custom cell',
 }
 
-export const customCell = () => (
+export const CustomCell = () => (
   <Table.Provider data={users}>
     <Table.Table>
       <Table.Header>
@@ -46,4 +46,4 @@ export const customCell = () => (
   </Table.Provider>
 )
 
-customCell.story = { name: 'custom cell' }
+CustomCell.story = { name: 'custom cell' }
