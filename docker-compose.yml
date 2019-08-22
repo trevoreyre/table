@@ -6,6 +6,7 @@ services:
     build: .
     volumes:
       - .:/home/node/app
+      - ~/.ssh:/home/node/.ssh:ro
     ports:
       - '5000:5000' # table storybook
     stdin_open: true
