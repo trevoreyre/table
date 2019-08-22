@@ -68,7 +68,7 @@ export const defaultPage = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination perPage={10} defaultPage={11} />
+    <Table.Pagination defaultPerPage={10} defaultPage={11} />
   </Table.Provider>
 )
 defaultPage.story = { name: 'default page' }

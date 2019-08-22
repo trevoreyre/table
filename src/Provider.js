@@ -2,7 +2,9 @@ import React, { useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import { capitalize, compose, curry, lowerFirst, orderBy } from 'lodash/fp'
 import Fuse from 'fuse.js'
-import { TableContext, DispatchContext } from './Context'
+import { TableContext, DispatchContext, DataContext } from './Context'
+
+// Try making controllable only on sub-components
 
 // CONTROLLABLE
 // [ ] page
@@ -89,6 +91,7 @@ const initialState = {
   sortByIsControlled: false,
   sortDirection: 'asc',
   sortDirectionIsControlled: false,
+  dispatchData: () => {},
 }
 
 const initialize = props => {
@@ -105,48 +108,88 @@ const initialize = props => {
       state[key] = defaultProp
     }
   })
-  state.initialData = props.data
+  // state.initialData = props.data
 
-  return {
-    ...state,
-    ...getData(state),
-  }
+  // return {
+  //   ...state,
+  //   ...getData(state),
+  // }
+  return state
 }
 
-const searchData = curry(
-  ({ search, searchValue, searchKeys }, { data, ...other }) => {
-    return {
-      ...other,
-      data: search({ searchValue, searchKeys, data }),
-    }
-  }
-)
+// const searchData = curry(
+//   ({ search, searchValue, searchKeys }, { data, ...other }) => {
+//     return {
+//       ...other,
+//       data: search({ searchValue, searchKeys, data }),
+//     }
+//   }
+// )
 
-const sortData = curry(
-  ({ sort, sortBy, sortDirection }, { data, ...other }) => {
-    return { ...other, data: sort({ sortBy, sortDirection, data }) }
-  }
-)
-
-const paginateData = curry(({ page, perPage }, { data, ...other }) => {
-  const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
-  const newPage = Math.min(totalPages, Math.max(1, page))
-  const newData =
-    newPage && perPage
-      ? data.slice((newPage - 1) * perPage, newPage * perPage)
-      : data
-  return { ...other, data: newData, page: newPage, totalPages }
+const searchData = curry(({ search, searchValue, searchKeys }, data) => {
+  console.log('searchData', { search, searchValue, searchKeys, data })
+  return search({ searchValue, searchKeys, data })
 })
 
-const getData = ({ initialData, ...state }) => {
-  return compose(
+// const sortData = curry(
+//   ({ sort, sortBy, sortDirection }, { data, ...other }) => {
+//     return { ...other, data: sort({ sortBy, sortDirection, data }) }
+//   }
+// )
+
+const sortData = curry(({ sort, sortBy, sortDirection }, data) => {
+  console.log('sortData', { sortBy, sortDirection, data })
+  return sort({ sortBy, sortDirection, data })
+})
+
+// const paginateData = curry(({ page, perPage }, { data, ...other }) => {
+//   const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
+//   const newPage = Math.min(totalPages, Math.max(1, page))
+//   const newData =
+//     newPage && perPage
+//       ? data.slice((newPage - 1) * perPage, newPage * perPage)
+//       : data
+//   return { ...other, data: newData, page: newPage, totalPages }
+// })
+
+const paginateData = curry(({ page, perPage }, data) => {
+  const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
+  const safePage = Math.min(totalPages, Math.max(1, page))
+  console.log('paginateData', { page, perPage, data })
+  const newData =
+    safePage && perPage
+      ? data.slice((safePage - 1) * perPage, safePage * perPage)
+      : data
+  return newData
+})
+
+// const getData = ({ initialData, ...state }) => {
+//   return compose(
+//     paginateData(state),
+//     sortData(state),
+//     searchData(state)
+//   )({ data: initialData })
+// }
+
+const getData = state =>
+  compose(
     paginateData(state),
     sortData(state),
     searchData(state)
-  )({ data: initialData })
+  )
+
+const dataReducer = (state, action) => {
+  console.log(action.type, { action, state })
+  switch (action.type) {
+    case 'getData': {
+      return getData(action.state)(action.state.data)
+    }
+    default:
+      return state
+  }
 }
 
-function reducer(state, action) {
+const reducer = (state, action) => {
   console.log(action.type, { action, state })
 
   switch (action.type) {
@@ -168,10 +211,8 @@ function reducer(state, action) {
         ...state,
         ...action.props,
       }
-      return {
-        ...newState,
-        ...getData(newState),
-      }
+      state.dispatchData({ type: 'getData', state: newState })
+      return newState
     }
     case 'syncDefaultProps': {
       const defaultProps = Object.entries(action.defaultProps).reduce(
@@ -181,16 +222,12 @@ function reducer(state, action) {
         },
         {}
       )
-      console.log('defaultProps:', defaultProps)
       const newState = {
         ...state,
         ...defaultProps,
       }
-      console.log('newState:', newState)
-      return {
-        ...newState,
-        ...getData(newState),
-      }
+      state.dispatchData({ type: 'getData', state: newState })
+      return newState
     }
     case 'sort': {
       const newState = {
@@ -287,8 +324,13 @@ const Provider = props => {
     sortDirection,
   } = props
 
-  const [state, dispatch] = useReducer(reducer, props, initialize)
-  console.log('render', state)
+  const [data, dispatchData] = useReducer(dataReducer)
+  const [state, dispatch] = useReducer(
+    reducer,
+    { ...props, dispatchData },
+    initialize
+  )
+  console.log('render', state, data)
 
   // useEffect(() => {
   //   dispatch({ type: 'syncProp', name: 'data', value: data })
@@ -311,7 +353,11 @@ const Provider = props => {
   return (
     <TableContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
-        {typeof children === 'function' ? children(state, dispatch) : children}
+        <DataContext.Provider value={data}>
+          {typeof children === 'function'
+            ? children(state, dispatch)
+            : children}
+        </DataContext.Provider>
       </DispatchContext.Provider>
     </TableContext.Provider>
   )

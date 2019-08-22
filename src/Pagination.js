@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useComponentWillMount } from './util'
-import { useTableState, useTableDispatch } from './Context'
+import { useComponentWillMount, useInitializeProps, useSyncProps } from './util'
+import { useTableState, useTableData, useTableDispatch } from './Context'
 import PageButton from './PageButton'
 
 const getFirstLastPage = ({ page, length, totalPages }) => {
@@ -39,19 +39,26 @@ const Pagination = props => {
     ...other
   } = props
   const state = useTableState()
+  const data = useTableData()
   const dispatch = useTableDispatch()
 
-  useComponentWillMount(() => {
-    if (defaultPage !== undefined || defaultPerPage !== undefined) {
-      dispatch({
-        type: 'syncDefaultProps',
-        defaultProps: {
-          ...(defaultPage !== undefined && { defaultPage }),
-          ...(defaultPerPage !== undefined && { defaultPerPage }),
-        },
-      })
-    }
-  })
+  const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
+  const safePage = Math.min(totalPages, Math.max(1, state.page))
+
+  useInitializeProps({ defaultPage, defaultPerPage })
+  // useSyncProps({ defaultPage, defaultPerPage, page, perPage })
+
+  // useComponentWillMount(() => {
+  //   if (defaultPage !== undefined || defaultPerPage !== undefined) {
+  //     dispatch({
+  //       type: 'syncDefaultProps',
+  //       defaultProps: {
+  //         ...(defaultPage !== undefined && { defaultPage }),
+  //         ...(defaultPerPage !== undefined && { defaultPerPage }),
+  //       },
+  //     })
+  //   }
+  // })
   useEffect(() => {
     if (page !== undefined || perPage !== undefined) {
       dispatch({
@@ -66,25 +73,25 @@ const Pagination = props => {
 
   const { firstPage, lastPage } = getFirstLastPage({
     length,
-    page: state.page,
-    totalPages: state.totalPages,
+    page: safePage,
+    totalPages,
   })
 
   let pageList = []
-  if (state.totalPages > 1) {
+  if (totalPages > 1) {
     pageList.push(1)
     if (firstPage > 2) pageList.push('...')
     pageList = pageList.concat(
       Array.from({ length: lastPage - firstPage + 1 }, (_, i) => i + firstPage)
     )
-    if (lastPage < state.totalPages - 1) pageList.push('...')
-    pageList.push(state.totalPages)
+    if (lastPage < totalPages - 1) pageList.push('...')
+    pageList.push(totalPages)
   }
 
   console.log('Pagination.render')
 
   if (children === undefined) {
-    return state.totalPages === 1 ? null : (
+    return totalPages === 1 ? null : (
       <As {...other}>
         <PageButton value="prev">Previous</PageButton>
         {pageList.map((value, i) => {
@@ -96,7 +103,7 @@ const Pagination = props => {
             )
           return (
             <PageButton key={value} value={value}>
-              {state.page === value ? <strong>{value}</strong> : value}
+              {safePage === value ? <strong>{value}</strong> : value}
             </PageButton>
           )
         })}
