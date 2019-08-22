@@ -5,7 +5,7 @@ export default {
   title: 'Basic|Simple',
 }
 
-export const simple = () => (
+export const Simple = () => (
   <Table.Table>
     <Table.Header>
       <Table.Row>

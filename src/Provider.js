@@ -95,6 +95,7 @@ const initialState = {
 }
 
 const initialize = props => {
+  console.log('initialize:', props)
   const state = { ...initialState }
 
   Object.keys(initialState).forEach(key => {
@@ -193,23 +194,20 @@ const reducer = (state, action) => {
   console.log(action.type, { action, state })
 
   switch (action.type) {
-    case 'syncProp': {
-      if (action.value === undefined) {
-        return state
-      }
-      const newState = {
-        ...state,
-        [action.name]: action.value,
-      }
-      return {
-        ...newState,
-        ...getData(newState),
-      }
+    case 'initialize': {
+      return initialize(action.props)
     }
     case 'syncProps': {
       const newState = {
         ...state,
         ...action.props,
+        ...Object.entries(action.props).reduce(
+          (controlledProps, [key, value]) => {
+            controlledProps[`${key}IsControlled`] = true
+            return controlledProps
+          },
+          {}
+        ),
       }
       state.dispatchData({ type: 'getData', state: newState })
       return newState
@@ -315,6 +313,8 @@ const reducer = (state, action) => {
 const Provider = props => {
   const {
     children,
+    data,
+    onChangePage,
     page,
     perPage,
     searchKeys,
@@ -324,21 +324,27 @@ const Provider = props => {
     sortDirection,
   } = props
 
-  const [data, dispatchData] = useReducer(dataReducer)
-  const [state, dispatch] = useReducer(
-    reducer,
-    { ...props, dispatchData },
-    initialize
-  )
+  const [stateData, dispatchData] = useReducer(dataReducer)
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    dispatchData,
+  })
   console.log('render', state, data)
 
+  // Initialize store after first render, so child components have chance to set shared state.
+  // May decide later that this is a shit idea.
   // useEffect(() => {
-  //   dispatch({ type: 'syncProp', name: 'data', value: data })
-  // }, [data])
+  //   dispatch({
+  //     type: 'initialize',
+  //     props,
+  //   })
+  // }, []) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     dispatch({
       type: 'syncProps',
       props: {
+        ...(data !== undefined && { data }),
+        ...(onChangePage !== undefined && { onChangePage }),
         ...(page !== undefined && { page }),
         ...(perPage !== undefined && { perPage }),
         ...(searchKeys !== undefined && { searchKeys }),
@@ -348,12 +354,23 @@ const Provider = props => {
         ...(sortDirection !== undefined && { sortDirection }),
       },
     })
-  }, [page, perPage, searchKeys, searchValue, selected, sortBy, sortDirection])
+  }, [
+    data,
+    onChangePage,
+    page,
+    perPage,
+    searchKeys,
+    searchValue,
+    selected,
+    sortBy,
+    sortDirection,
+  ])
 
+  console.log('Provider.render', state)
   return (
     <TableContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
-        <DataContext.Provider value={data}>
+        <DataContext.Provider value={stateData}>
           {typeof children === 'function'
             ? children(state, dispatch)
             : children}

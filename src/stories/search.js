@@ -7,7 +7,7 @@ export default {
   title: 'Basic|Search',
 }
 
-export const search = () => (
+export const Search = () => (
   <Table.Provider data={users}>
     <Table.Search placeholder="Search" />
     <Table.Table>
@@ -39,7 +39,7 @@ export const search = () => (
   </Table.Provider>
 )
 
-export const customSearch = () => {
+export const CustomSearch = () => {
   const [searchResults, setSearchResults] = useState([])
 
   const search = ({ searchValue, searchKeys, data }) => {
@@ -119,4 +119,4 @@ export const customSearch = () => {
     </Table.Provider>
   )
 }
-customSearch.story = { name: 'custom search' }
+CustomSearch.story = { name: 'Custom search' }

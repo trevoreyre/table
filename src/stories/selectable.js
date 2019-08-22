@@ -6,7 +6,7 @@ export default {
   title: 'Basic|Selectable',
 }
 
-export const selectable = () => {
+export const Selectable = () => {
   const [users, setUsers] = useState(usersData)
 
   const handleDeleteClick = (selected, dispatch) => () => {

@@ -11,7 +11,7 @@ export default {
   title: 'Styling|react-bootstrap',
 }
 
-export const reactBootstrap = () => (
+export const ReactBootstrap = () => (
   <Table.Provider data={users} perPage={10}>
     <Table.Search
       as={BSForm.Control}
@@ -63,4 +63,4 @@ export const reactBootstrap = () => (
   </Table.Provider>
 )
 
-reactBootstrap.story = { name: 'react-bootstrap' }
+ReactBootstrap.story = { name: 'react-bootstrap' }

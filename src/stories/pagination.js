@@ -6,7 +6,7 @@ export default {
   title: 'Basic|Pagination',
 }
 
-export const pagination = () => (
+export const Pagination = () => (
   <Table.Provider data={users}>
     <Table.Search />
     <Table.Table>
@@ -39,7 +39,7 @@ export const pagination = () => (
   </Table.Provider>
 )
 
-export const defaultPage = () => (
+export const DefaultPage = () => (
   <Table.Provider data={users}>
     <Table.Search />
     <Table.Table>
@@ -71,9 +71,9 @@ export const defaultPage = () => (
     <Table.Pagination defaultPerPage={10} defaultPage={11} />
   </Table.Provider>
 )
-defaultPage.story = { name: 'default page' }
+DefaultPage.story = { name: 'Default page' }
 
-export const controlled = () => {
+export const Controlled = () => {
   const [page, setPage] = useState(11)
 
   const handleChangePage = newPage => setPage(newPage)
@@ -86,12 +86,7 @@ export const controlled = () => {
         Page
         <input type="number" value={page || ''} onChange={handleChange} />
       </label>
-      <Table.Provider
-        data={users}
-        perPage={10}
-        page={page || 1}
-        onChangePage={handleChangePage}
-      >
+      <Table.Provider data={users} onChangePage={handleChangePage}>
         <Table.Table>
           <Table.Header>
             <Table.Row>
@@ -118,13 +113,13 @@ export const controlled = () => {
             }
           </Table.Body>
         </Table.Table>
-        <Table.Pagination />
+        <Table.Pagination perPage={10} page={page || 1} />
       </Table.Provider>
     </>
   )
 }
 
-export const customPagination = () => (
+export const CustomPagination = () => (
   <Table.Provider data={users} perPage={10}>
     <Table.Search />
     <Table.Table>
@@ -174,4 +169,4 @@ export const customPagination = () => (
     </Table.Pagination>
   </Table.Provider>
 )
-customPagination.story = { name: 'custom pagination' }
+CustomPagination.story = { name: 'Custom pagination' }
