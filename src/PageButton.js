@@ -1,10 +1,13 @@
 import React from 'react'
-import { useTableState, useTableDispatch } from './Context'
+import { useTableState, useTableData, useTableDispatch } from './Context'
 
 const PageButton = props => {
   const { as: As = 'button', children, onClick, value, ...other } = props
   const state = useTableState()
+  const data = useTableData()
   const dispatch = useTableDispatch()
+
+  const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
 
   const handleClick = event => {
     let page
@@ -13,13 +16,13 @@ const PageButton = props => {
         page = 1
         break
       case 'prev':
-        page = Math.max(state.page - 1, 1)
+        page = state.page - 1
         break
       case 'next':
-        page = Math.min(state.page + 1, state.totalPages)
+        page = state.page + 1
         break
       case 'last':
-        page = state.totalPages
+        page = totalPages
         break
       default:
         page = value
@@ -38,7 +41,7 @@ const PageButton = props => {
   switch (value) {
     case 'next':
     case 'last':
-      disabled = state.page === state.totalPages
+      disabled = state.page === totalPages
       break
     case 'prev':
     case 'first':

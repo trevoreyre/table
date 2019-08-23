@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useComponentWillMount, useInitializeProps, useSyncProps } from './util'
-import { useTableState, useTableData, useTableDispatch } from './Context'
+import React from 'react'
+import { useSyncProps } from './util'
+import { useTableState, useTableData } from './Context'
 import PageButton from './PageButton'
 
 const getFirstLastPage = ({ page, length, totalPages }) => {
@@ -40,36 +40,11 @@ const Pagination = props => {
   } = props
   const state = useTableState()
   const data = useTableData()
-  const dispatch = useTableDispatch()
 
   const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
   const safePage = Math.min(totalPages, Math.max(1, state.page))
 
-  useInitializeProps({ defaultPage, defaultPerPage })
-  // useSyncProps({ defaultPage, defaultPerPage, page, perPage })
-
-  // useComponentWillMount(() => {
-  //   if (defaultPage !== undefined || defaultPerPage !== undefined) {
-  //     dispatch({
-  //       type: 'syncDefaultProps',
-  //       defaultProps: {
-  //         ...(defaultPage !== undefined && { defaultPage }),
-  //         ...(defaultPerPage !== undefined && { defaultPerPage }),
-  //       },
-  //     })
-  //   }
-  // })
-  useEffect(() => {
-    if (page !== undefined || perPage !== undefined) {
-      dispatch({
-        type: 'syncProps',
-        props: {
-          ...(page !== undefined && { page }),
-          ...(perPage !== undefined && { perPage }),
-        },
-      })
-    }
-  }, [dispatch, page, perPage])
+  useSyncProps({ defaultPage, defaultPerPage, page, perPage }, [page, perPage])
 
   const { firstPage, lastPage } = getFirstLastPage({
     length,
@@ -116,10 +91,10 @@ const Pagination = props => {
     <As {...other}>
       {typeof children === 'function'
         ? children({
-            page: state.page,
+            page: safePage,
             pageList,
             perPage: state.perPage,
-            totalPages: state.totalPages,
+            totalPages: totalPages,
           })
         : children}
     </As>

@@ -40,7 +40,7 @@ export const Pagination = () => (
 )
 
 export const DefaultPage = () => (
-  <Table.Provider data={users}>
+  <Table.Provider>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -56,7 +56,7 @@ export const DefaultPage = () => (
           </Table.Cell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
@@ -68,7 +68,7 @@ export const DefaultPage = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination defaultPerPage={10} defaultPage={11} />
+    <Table.Pagination perPage={10} defaultPage={11} />
   </Table.Provider>
 )
 DefaultPage.story = { name: 'Default page' }
@@ -86,7 +86,7 @@ export const Controlled = () => {
         Page
         <input type="number" value={page || ''} onChange={handleChange} />
       </label>
-      <Table.Provider data={users} onChangePage={handleChangePage}>
+      <Table.Provider>
         <Table.Table>
           <Table.Header>
             <Table.Row>
@@ -101,7 +101,7 @@ export const Controlled = () => {
               </Table.Cell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
+          <Table.Body data={users}>
             {users =>
               users.map(user => (
                 <Table.Row key={user.id}>

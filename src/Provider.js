@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useReducer } from 'react'
 import PropTypes from 'prop-types'
-import { capitalize, compose, curry, lowerFirst, orderBy } from 'lodash/fp'
+import { capitalize, compose, curry, orderBy } from 'lodash/fp'
 import Fuse from 'fuse.js'
 import { TableContext, DispatchContext, DataContext } from './Context'
 
@@ -118,63 +118,16 @@ const initialize = props => {
   return state
 }
 
-// const searchData = curry(
-//   ({ search, searchValue, searchKeys }, { data, ...other }) => {
-//     return {
-//       ...other,
-//       data: search({ searchValue, searchKeys, data }),
-//     }
-//   }
-// )
-
 const searchData = curry(({ search, searchValue, searchKeys }, data) => {
-  console.log('searchData', { search, searchValue, searchKeys, data })
   return search({ searchValue, searchKeys, data })
 })
 
-// const sortData = curry(
-//   ({ sort, sortBy, sortDirection }, { data, ...other }) => {
-//     return { ...other, data: sort({ sortBy, sortDirection, data }) }
-//   }
-// )
-
 const sortData = curry(({ sort, sortBy, sortDirection }, data) => {
-  console.log('sortData', { sortBy, sortDirection, data })
   return sort({ sortBy, sortDirection, data })
 })
 
-// const paginateData = curry(({ page, perPage }, { data, ...other }) => {
-//   const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
-//   const newPage = Math.min(totalPages, Math.max(1, page))
-//   const newData =
-//     newPage && perPage
-//       ? data.slice((newPage - 1) * perPage, newPage * perPage)
-//       : data
-//   return { ...other, data: newData, page: newPage, totalPages }
-// })
-
-const paginateData = curry(({ page, perPage }, data) => {
-  const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
-  const safePage = Math.min(totalPages, Math.max(1, page))
-  console.log('paginateData', { page, perPage, data })
-  const newData =
-    safePage && perPage
-      ? data.slice((safePage - 1) * perPage, safePage * perPage)
-      : data
-  return newData
-})
-
-// const getData = ({ initialData, ...state }) => {
-//   return compose(
-//     paginateData(state),
-//     sortData(state),
-//     searchData(state)
-//   )({ data: initialData })
-// }
-
 const getData = state =>
   compose(
-    paginateData(state),
     sortData(state),
     searchData(state)
   )
@@ -198,32 +151,7 @@ const reducer = (state, action) => {
       return initialize(action.props)
     }
     case 'syncProps': {
-      const newState = {
-        ...state,
-        ...action.props,
-        ...Object.entries(action.props).reduce(
-          (controlledProps, [key, value]) => {
-            controlledProps[`${key}IsControlled`] = true
-            return controlledProps
-          },
-          {}
-        ),
-      }
-      state.dispatchData({ type: 'getData', state: newState })
-      return newState
-    }
-    case 'syncDefaultProps': {
-      const defaultProps = Object.entries(action.defaultProps).reduce(
-        (props, [key, value]) => {
-          props[lowerFirst(key.replace('default', ''))] = value
-          return props
-        },
-        {}
-      )
-      const newState = {
-        ...state,
-        ...defaultProps,
-      }
+      const newState = { ...state, ...action.props }
       state.dispatchData({ type: 'getData', state: newState })
       return newState
     }
@@ -254,13 +182,9 @@ const reducer = (state, action) => {
       if (state.pageIsControlled) {
         return state
       }
-      const newState = {
+      return {
         ...state,
         page: action.page,
-      }
-      return {
-        ...newState,
-        ...getData(newState),
       }
     }
     case 'changePerPage': {
@@ -311,62 +235,15 @@ const reducer = (state, action) => {
 }
 
 const Provider = props => {
-  const {
-    children,
-    data,
-    onChangePage,
-    page,
-    perPage,
-    searchKeys,
-    searchValue,
-    selected,
-    sortBy,
-    sortDirection,
-  } = props
+  const { children } = props
 
   const [stateData, dispatchData] = useReducer(dataReducer)
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     dispatchData,
   })
-  console.log('render', state, data)
 
-  // Initialize store after first render, so child components have chance to set shared state.
-  // May decide later that this is a shit idea.
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'initialize',
-  //     props,
-  //   })
-  // }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    dispatch({
-      type: 'syncProps',
-      props: {
-        ...(data !== undefined && { data }),
-        ...(onChangePage !== undefined && { onChangePage }),
-        ...(page !== undefined && { page }),
-        ...(perPage !== undefined && { perPage }),
-        ...(searchKeys !== undefined && { searchKeys }),
-        ...(searchValue !== undefined && { searchValue }),
-        ...(sortBy !== undefined && { sortBy }),
-        ...(selected !== undefined && { selected }),
-        ...(sortDirection !== undefined && { sortDirection }),
-      },
-    })
-  }, [
-    data,
-    onChangePage,
-    page,
-    perPage,
-    searchKeys,
-    searchValue,
-    selected,
-    sortBy,
-    sortDirection,
-  ])
-
-  console.log('Provider.render', state)
+  console.log('Provider.render', { state, data: stateData })
   return (
     <TableContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
