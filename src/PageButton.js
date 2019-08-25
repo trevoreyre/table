@@ -28,7 +28,9 @@ const PageButton = props => {
         page = value
     }
 
-    dispatch({ type: 'changePage', page })
+    if (!state.pageIsControlled) {
+      dispatch({ type: 'changePage', page })
+    }
     if (state.onChangePage) {
       state.onChangePage(page)
     }

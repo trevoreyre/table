@@ -113,7 +113,11 @@ export const Controlled = () => {
             }
           </Table.Body>
         </Table.Table>
-        <Table.Pagination perPage={10} page={page || 1} />
+        <Table.Pagination
+          perPage={10}
+          page={page || 1}
+          onChange={handleChangePage}
+        />
       </Table.Provider>
     </>
   )

@@ -94,6 +94,8 @@ const initialState = {
   dispatchData: () => {},
 }
 
+const dataProps = ['searchValue', 'sortBy', 'sortDirection']
+
 const initialize = props => {
   console.log('initialize:', props)
   const state = { ...initialState }
@@ -133,7 +135,7 @@ const getData = state =>
   )
 
 const dataReducer = (state, action) => {
-  console.log(action.type, { action, state })
+  console.log('dataReducer', action.type, { action, state })
   switch (action.type) {
     case 'getData': {
       return getData(action.state)(action.state.data)
@@ -144,7 +146,7 @@ const dataReducer = (state, action) => {
 }
 
 const reducer = (state, action) => {
-  console.log(action.type, { action, state })
+  console.log('reducer', action.type, { action, state })
 
   switch (action.type) {
     case 'initialize': {
@@ -152,7 +154,15 @@ const reducer = (state, action) => {
     }
     case 'syncProps': {
       const newState = { ...state, ...action.props }
-      state.dispatchData({ type: 'getData', state: newState })
+      let updateData = true
+      Object.keys(action.props).forEach(prop => {
+        if (state[`${prop}Initialized`] && !dataProps.includes(prop)) {
+          updateData = false
+        }
+      })
+      if (updateData) {
+        state.dispatchData({ type: 'getData', state: newState })
+      }
       return newState
     }
     case 'sort': {

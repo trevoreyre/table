@@ -34,6 +34,7 @@ const Pagination = props => {
     defaultPage,
     defaultPerPage,
     length = 7,
+    onChange,
     page,
     perPage,
     ...other
@@ -44,7 +45,10 @@ const Pagination = props => {
   const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
   const safePage = Math.min(totalPages, Math.max(1, state.page))
 
-  useSyncProps({ defaultPage, defaultPerPage, page, perPage }, [page, perPage])
+  useSyncProps(
+    { defaultPage, defaultPerPage, onChangePage: onChange, page, perPage },
+    [page, perPage]
+  )
 
   const { firstPage, lastPage } = getFirstLastPage({
     length,
