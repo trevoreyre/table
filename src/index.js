@@ -4,7 +4,6 @@ import Checkbox from './Checkbox'
 import Footer from './Footer'
 import Header from './Header'
 import PageButton from './PageButton'
-import PageInput from './PageInput'
 import Pagination from './Pagination'
 import PerPage from './PerPage'
 import Provider from './Provider'
@@ -20,7 +19,6 @@ const Components = {
   Footer,
   Header,
   PageButton,
-  PageInput,
   Pagination,
   PerPage,
   Provider,
@@ -38,7 +36,6 @@ export {
   Footer as TableFooter,
   Header as TableHeader,
   PageButton as TablePageButton,
-  PageInput as TablePageInput,
   Pagination as TablePagination,
   PerPage as TablePerPage,
   Provider as TableProvider,

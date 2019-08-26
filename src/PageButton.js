@@ -39,18 +39,17 @@ const PageButton = props => {
     }
   }
 
-  let disabled
+  let disabled = false
   switch (value) {
     case 'next':
     case 'last':
-      disabled = state.page === totalPages
+      disabled = state.page >= totalPages
       break
     case 'prev':
     case 'first':
-      disabled = state.page === 1
+      disabled = state.page <= 1
       break
     default:
-      disabled = false
   }
 
   return (

@@ -39,6 +39,49 @@ export const Pagination = () => (
   </Table.Provider>
 )
 
+export const PerPageSelect = () => (
+  <Table.Provider>
+    <label htmlFor="per-page" style={{ marginRight: '8px' }}>
+      Per page
+    </label>
+    <Table.PerPage id="per-page" defaultValue={10}>
+      <option value={10}>10</option>
+      <option value={25}>25</option>
+      <option value={50}>50</option>
+      <option value={100}>100</option>
+    </Table.PerPage>
+    <Table.Search style={{ marginLeft: '40px' }} />
+    <Table.Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.Cell sortBy="name">
+            Name <Table.SortIcon />
+          </Table.Cell>
+          <Table.Cell sortBy="email">
+            Email <Table.SortIcon />
+          </Table.Cell>
+          <Table.Cell sortBy="ipAddress">
+            IP Address <Table.SortIcon />
+          </Table.Cell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body data={users}>
+        {users =>
+          users.map(user => (
+            <Table.Row key={user.id}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.ipAddress}</Table.Cell>
+            </Table.Row>
+          ))
+        }
+      </Table.Body>
+    </Table.Table>
+    <Table.Pagination defaultPage={11} />
+  </Table.Provider>
+)
+PerPageSelect.story = { name: 'Per page select' }
+
 export const DefaultPage = () => (
   <Table.Provider>
     <Table.Search />
@@ -153,12 +196,11 @@ export const CustomPagination = () => (
       </Table.Body>
     </Table.Table>
     <Table.Pagination>
-      {({ totalPages }) => (
+      {({ page, totalPages }) => (
         <>
           <Table.PageButton value="first">{'<<'}</Table.PageButton>
           <Table.PageButton value="prev">{'<'}</Table.PageButton>
-          <Table.PageInput />
-          {`/${totalPages}`}
+          {page}/{totalPages}
           <Table.PageButton value="next">{'>'}</Table.PageButton>
           <Table.PageButton value="last">{'>>'}</Table.PageButton>
           <span>Per page</span>
