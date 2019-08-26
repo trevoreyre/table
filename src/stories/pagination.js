@@ -7,7 +7,7 @@ export default {
 }
 
 export const Pagination = () => (
-  <Table.Provider data={users}>
+  <Table.Provider>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -23,7 +23,7 @@ export const Pagination = () => (
           </Table.Cell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
@@ -124,7 +124,7 @@ export const Controlled = () => {
 }
 
 export const CustomPagination = () => (
-  <Table.Provider data={users} perPage={10}>
+  <Table.Provider>
     <Table.Search />
     <Table.Table>
       <Table.Header>
@@ -140,7 +140,7 @@ export const CustomPagination = () => (
           </Table.Cell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
@@ -162,7 +162,7 @@ export const CustomPagination = () => (
           <Table.PageButton value="next">{'>'}</Table.PageButton>
           <Table.PageButton value="last">{'>>'}</Table.PageButton>
           <span>Per page</span>
-          <Table.PerPage>
+          <Table.PerPage defaultValue={25}>
             <option value={10}>10</option>
             <option value={25}>25</option>
             <option value={50}>50</option>

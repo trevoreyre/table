@@ -198,14 +198,13 @@ const reducer = (state, action) => {
       }
     }
     case 'changePerPage': {
-      const newState = {
+      if (state.perPageIsControlled) {
+        return state
+      }
+      return {
         ...state,
         perPage: action.perPage,
         page: 1,
-      }
-      return {
-        ...newState,
-        ...getData(newState),
       }
     }
     case 'select':

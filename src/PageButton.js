@@ -35,7 +35,7 @@ const PageButton = props => {
       state.onChangePage(page)
     }
     if (onClick) {
-      onClick(event)
+      onClick(event, page)
     }
   }
 

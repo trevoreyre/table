@@ -12,12 +12,13 @@ const useSyncProps = (props, dependencies) => {
       .filter(([name, value]) => value !== undefined)
       .reduce((result, [name, value]) => {
         const prop = lowerFirst(name.replace('default', ''))
-        // Sync default props
         if (name.startsWith('default')) {
+          // Sync default props if not initialized or controlled
           if (!state[`${prop}Initialized`] && !result[prop]) {
             result[prop] = value
           }
         } else {
+          // Sync controlled props
           result[prop] = value
           result[`${prop}IsControlled`] = true
         }
