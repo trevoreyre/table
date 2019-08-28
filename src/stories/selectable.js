@@ -1,76 +1,190 @@
 import React, { useState } from 'react'
 import Table from '../index'
-import usersData from './users.json'
+import { useTableState, useTableDispatch } from '../Context'
+import users from './users.json'
 
 export default {
   title: 'Basic|Selectable',
 }
 
-export const Selectable = () => {
-  const [users, setUsers] = useState(usersData)
+export const Selectable = () => (
+  <Table.Provider>
+    <Table.Search />
+    <Table.Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeadCell />
+          <Table.HeadCell sortBy="name">
+            Name <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
+            Email <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
+            IP Address <Table.SortIcon />
+          </Table.HeadCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body data={users}>
+        {users =>
+          users.map(user => (
+            <Table.Row key={user.id}>
+              <Table.Cell>
+                <Table.Checkbox value={user.id} />
+              </Table.Cell>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.ipAddress}</Table.Cell>
+            </Table.Row>
+          ))
+        }
+      </Table.Body>
+    </Table.Table>
+    <Table.Pagination perPage={10} />
+  </Table.Provider>
+)
 
-  const handleDeleteClick = (selected, dispatch) => () => {
+export const SelectAll = () => (
+  <Table.Provider>
+    <Table.Search />
+    <Table.Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeadCell>
+            <Table.Checkbox select="all" value="id" />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="name">
+            Name <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
+            Email <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
+            IP Address <Table.SortIcon />
+          </Table.HeadCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body data={users}>
+        {users =>
+          users.map(user => (
+            <Table.Row key={user.id}>
+              <Table.Cell>
+                <Table.Checkbox value={user.id} />
+              </Table.Cell>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.ipAddress}</Table.Cell>
+            </Table.Row>
+          ))
+        }
+      </Table.Body>
+    </Table.Table>
+    <Table.Pagination perPage={10} />
+  </Table.Provider>
+)
+SelectAll.story = { name: 'Select all' }
+
+export const SelectPage = () => (
+  <Table.Provider>
+    <Table.Search />
+    <Table.Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeadCell>
+            <Table.Checkbox select="page" value="id" />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="name">
+            Name <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
+            Email <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
+            IP Address <Table.SortIcon />
+          </Table.HeadCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body data={users}>
+        {users =>
+          users.map(user => (
+            <Table.Row key={user.id}>
+              <Table.Cell>
+                <Table.Checkbox value={user.id} />
+              </Table.Cell>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.ipAddress}</Table.Cell>
+            </Table.Row>
+          ))
+        }
+      </Table.Body>
+    </Table.Table>
+    <Table.Pagination perPage={10} />
+  </Table.Provider>
+)
+SelectPage.story = { name: 'Select page' }
+
+const TableExample = () => {
+  const [usersState, setUsers] = useState(users)
+  const state = useTableState()
+  const dispatch = useTableDispatch()
+
+  const handleDeleteClick = selected => () => {
     setUsers(users.filter(user => !selected.includes(user.id)))
-    dispatch({ type: 'selectClear' })
+    dispatch({ type: 'selectAll', checked: false })
   }
 
   return (
-    <Table.Provider data={users} perPage={10}>
-      {({ selected }, dispatch) => (
+    <>
+      <Table.Search />
+      {!!state.selected.length && (
         <>
-          <Table.Search />
-          {!!selected.length && (
-            <>
-              <p style={{ display: 'inline', marginLeft: '24px' }}>
-                {selected.length} selected
-              </p>
-              <button onClick={() => dispatch({ type: 'selectClear' })}>
-                Clear
-              </button>
-              <button onClick={handleDeleteClick(selected, dispatch)}>
-                Delete
-              </button>
-            </>
-          )}
-          <Table.Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeadCell>
-                  <Table.Checkbox value="id" />
-                </Table.HeadCell>
-                <Table.HeadCell sortBy="name">
-                  Name <Table.SortIcon />
-                </Table.HeadCell>
-                <Table.HeadCell sortBy="email">
-                  Email <Table.SortIcon />
-                </Table.HeadCell>
-                <Table.HeadCell sortBy="ipAddress">
-                  IP Address <Table.SortIcon />
-                </Table.HeadCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {users =>
-                users.map(user => (
-                  <Table.Row key={user.id}>
-                    <Table.Cell>
-                      <Table.Checkbox
-                        value={user.id}
-                        data={user}
-                        selector="id"
-                      />
-                    </Table.Cell>
-                    <Table.Cell>{user.name}</Table.Cell>
-                    <Table.Cell>{user.email}</Table.Cell>
-                    <Table.Cell>{user.ipAddress}</Table.Cell>
-                  </Table.Row>
-                ))
-              }
-            </Table.Body>
-          </Table.Table>
-          <Table.Pagination />
+          <p style={{ display: 'inline', margin: '0 8px 0 24px' }}>
+            {state.selected.length} selected
+          </p>
+          <button onClick={handleDeleteClick(state.selected)}>Delete</button>
         </>
       )}
-    </Table.Provider>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell>
+              <Table.Checkbox select="page" value="id" />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={usersState}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>
+                  <Table.Checkbox value={user.id} />
+                </Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+      <Table.Pagination perPage={10} />
+    </>
   )
 }
+
+export const WithAction = () => (
+  <Table.Provider>
+    <TableExample />
+  </Table.Provider>
+)
+WithAction.story = { name: 'With action' }

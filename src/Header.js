@@ -8,10 +8,12 @@ const Header = props => {
     children,
     defaultSortBy,
     defaultSortDirection,
+    onSelectAll,
+    onSelectPage,
     onSort,
+    sort,
     sortBy,
     sortDirection,
-    sort,
     ...other
   } = props
 
@@ -20,6 +22,8 @@ const Header = props => {
       defaultSort: sort,
       defaultSortBy,
       defaultSortDirection,
+      onSelectAll,
+      onSelectPage,
       onSort,
       sortBy,
       sortDirection,

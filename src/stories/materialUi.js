@@ -23,7 +23,7 @@ export default {
 }
 
 export const MaterialUi = () => (
-  <Table.Provider data={users} perPage={10}>
+  <Table.Provider>
     <Table.Search
       as={MuiInput}
       placeholder="Search"
@@ -44,7 +44,7 @@ export const MaterialUi = () => (
           </Table.HeadCell>
         </Table.Row>
       </Table.Header>
-      <Table.Body as={MuiTableBody}>
+      <Table.Body as={MuiTableBody} data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id} as={MuiTableRow}>
@@ -64,6 +64,7 @@ export const MaterialUi = () => (
           </span>
           <Table.PerPage
             as={MuiSelect}
+            defaultValue={10}
             native
             disableUnderline
             style={{ marginRight: '16px ', fontSize: '14px' }}

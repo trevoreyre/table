@@ -3,10 +3,17 @@ import { useSyncProps } from './util'
 import { LevelContext, useTableData } from './Context'
 
 const Body = props => {
-  const { as: As = 'tbody', children, data, ...other } = props
+  const {
+    as: As = 'tbody',
+    children,
+    data,
+    onSelect,
+    selected,
+    ...other
+  } = props
   const tableData = useTableData({ paginated: true })
 
-  useSyncProps({ data }, [data])
+  useSyncProps({ data, onSelect, selected }, [data, selected])
 
   console.log('Body.render')
 

@@ -12,7 +12,7 @@ export default {
 }
 
 export const ReactBootstrap = () => (
-  <Table.Provider data={users} perPage={10}>
+  <Table.Provider>
     <Table.Search
       as={BSForm.Control}
       style={{ maxWidth: '300px', marginBottom: '24px' }}
@@ -26,7 +26,7 @@ export const ReactBootstrap = () => (
           <Table.HeadCell sortBy="ipAddress">IP Address</Table.HeadCell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
@@ -38,7 +38,11 @@ export const ReactBootstrap = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination as={BSPagination} style={{ marginTop: '24px' }}>
+    <Table.Pagination
+      as={BSPagination}
+      perPage={10}
+      style={{ marginTop: '24px' }}
+    >
       {({ page, pageList }) => (
         <>
           <Table.PageButton as={BSPagination.Prev} value="prev" />

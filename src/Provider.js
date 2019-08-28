@@ -1,6 +1,13 @@
 import React, { useReducer } from 'react'
 import PropTypes from 'prop-types'
-import { capitalize, compose, curry, orderBy } from 'lodash/fp'
+import {
+  capitalize,
+  compose,
+  curry,
+  difference,
+  orderBy,
+  union,
+} from 'lodash/fp'
 import Fuse from 'fuse.js'
 import { TableContext, DispatchContext, DataContext } from './Context'
 
@@ -15,15 +22,14 @@ import { TableContext, DispatchContext, DataContext } from './Context'
 // [x] searchValue - Search (as value)
 // [x] searchKeys - Search
 // [x] search - Search
-// [ ] sortBy - Header
-// [ ] sortDirection - Header
-// [ ] onSort - [ ] Header, [ ] HeadCell (as onClick)
-// [ ] sort - [ ] Header, [ ] HeadCell
-// [ ] selected
-// [ ] onSelect
-// [ ] onSelectAll
-// [ ] onSelectNone
-// [ ] onSelectClear
+// [x] sortBy - Header
+// [x] sortDirection - Header
+// [x] onSort - [x] Header, [x] HeadCell (as onClick)
+// [x] sort - [x] Header, [x] HeadCell
+// [x] selected - Body
+// [x] onSelect - Body
+// [x] onSelectAll - Header
+// [x] onSelectPage - Header
 
 // Should data be controllable?
 //
@@ -213,35 +219,32 @@ const reducer = (state, action) => {
       }
     }
     case 'select':
+      if (state.selectedIsControlled) {
+        return state
+      }
       return {
         ...state,
         selected: action.checked
-          ? [...state.selected, action.value]
-          : state.selected.filter(value => value !== action.value),
+          ? [...state.selected, action.selected]
+          : state.selected.filter(value => value !== action.selected),
+      }
+    case 'selectPage':
+      if (state.selectedIsControlled) {
+        return state
+      }
+      return {
+        ...state,
+        selected: action.checked
+          ? union(action.selected, state.selected)
+          : difference(state.selected, action.selected),
       }
     case 'selectAll':
-      return {
-        ...state,
-        selected: [
-          ...state.selected.filter(
-            selectedItem =>
-              !state.data.map(item => item[action.value]).includes(selectedItem)
-          ),
-          ...state.data.map(item => item[action.value]),
-        ],
+      if (state.selectedIsControlled) {
+        return state
       }
-    case 'selectNone':
       return {
         ...state,
-        selected: state.selected.filter(
-          selectedItem =>
-            !state.data.map(item => item[action.value]).includes(selectedItem)
-        ),
-      }
-    case 'selectClear':
-      return {
-        ...state,
-        selected: [],
+        selected: action.checked ? action.selected : [],
       }
     default:
       return state
@@ -251,7 +254,7 @@ const reducer = (state, action) => {
 const Provider = props => {
   const { children } = props
 
-  const [stateData, dispatchData] = useReducer(dataReducer)
+  const [stateData, dispatchData] = useReducer(dataReducer, [])
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     dispatchData,
@@ -260,13 +263,13 @@ const Provider = props => {
   console.log('Provider.render', { state, data: stateData })
   return (
     <TableContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>
-        <DataContext.Provider value={stateData}>
+      <DataContext.Provider value={stateData}>
+        <DispatchContext.Provider value={dispatch}>
           {typeof children === 'function'
             ? children(state, dispatch)
             : children}
-        </DataContext.Provider>
-      </DispatchContext.Provider>
+        </DispatchContext.Provider>
+      </DataContext.Provider>
     </TableContext.Provider>
   )
 }

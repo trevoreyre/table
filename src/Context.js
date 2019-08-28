@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 
 const TableContext = createContext({})
 const DispatchContext = createContext()
-const DataContext = createContext()
+const DataContext = createContext([])
 const LevelContext = createContext('body')
 const SortContext = createContext({ active: false, sortDirection: 'asc' })
 
@@ -31,7 +31,6 @@ const useTableDispatch = () => {
   return dispatch
 }
 
-// Add option { paginated: true/false }
 const useTableData = ({ paginated } = {}) => {
   const state = useContext(TableContext)
   const data = useContext(DataContext)
