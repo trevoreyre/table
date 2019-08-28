@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-const TableContext = createContext()
+const TableContext = createContext({})
 const DispatchContext = createContext()
 const DataContext = createContext()
 const LevelContext = createContext('body')
@@ -14,7 +14,7 @@ const useTableState = () => {
   return state
 }
 
-const paginateData = ({ page, perPage }, data) => {
+const paginateData = ({ page, perPage } = {}, data) => {
   const totalPages = perPage ? Math.ceil(data.length / perPage) : 1
   const safePage = Math.min(totalPages, Math.max(1, page))
   console.log('paginateData', { page, perPage, data })

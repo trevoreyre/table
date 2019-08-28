@@ -12,15 +12,15 @@ export const Pagination = () => (
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body data={users}>
@@ -54,15 +54,15 @@ export const PerPageSelect = () => (
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body data={users}>
@@ -77,7 +77,7 @@ export const PerPageSelect = () => (
         }
       </Table.Body>
     </Table.Table>
-    <Table.Pagination defaultPage={11} />
+    <Table.Pagination />
   </Table.Provider>
 )
 PerPageSelect.story = { name: 'Per page select' }
@@ -88,15 +88,15 @@ export const DefaultPage = () => (
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body data={users}>
@@ -133,15 +133,15 @@ export const Controlled = () => {
         <Table.Table>
           <Table.Header>
             <Table.Row>
-              <Table.Cell sortBy="name">
+              <Table.HeadCell sortBy="name">
                 Name <Table.SortIcon />
-              </Table.Cell>
-              <Table.Cell sortBy="email">
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="email">
                 Email <Table.SortIcon />
-              </Table.Cell>
-              <Table.Cell sortBy="ipAddress">
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="ipAddress">
                 IP Address <Table.SortIcon />
-              </Table.Cell>
+              </Table.HeadCell>
             </Table.Row>
           </Table.Header>
           <Table.Body data={users}>
@@ -172,15 +172,15 @@ export const CustomPagination = () => (
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body data={users}>

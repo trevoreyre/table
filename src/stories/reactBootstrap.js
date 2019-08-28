@@ -21,9 +21,9 @@ export const ReactBootstrap = () => (
     <Table.Table as={BSTable} striped>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">Name</Table.Cell>
-          <Table.Cell sortBy="email">Email</Table.Cell>
-          <Table.Cell sortBy="ipAddress">IP Address</Table.Cell>
+          <Table.HeadCell sortBy="name">Name</Table.HeadCell>
+          <Table.HeadCell sortBy="email">Email</Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">IP Address</Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

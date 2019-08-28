@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import fuzzysort from 'fuzzysort'
 import Table from '../index'
 import users from './users.json'
@@ -8,23 +8,23 @@ export default {
 }
 
 export const Search = () => (
-  <Table.Provider data={users}>
+  <Table.Provider>
     <Table.Search placeholder="Search" />
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell sortBy="name">
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
@@ -53,28 +53,30 @@ export const CustomSearch = () => {
     }
   }
 
+  const searchKeys = useMemo(() => ['name', 'email', 'ipAddress'], [])
+
   return (
-    <Table.Provider
-      data={users}
-      search={search}
-      searchKeys={['name', 'email', 'ipAddress']}
-    >
-      <Table.Search placeholder="Search" />
+    <Table.Provider>
+      <Table.Search
+        placeholder="Search"
+        search={search}
+        searchKeys={searchKeys}
+      />
       <Table.Table>
         <Table.Header>
           <Table.Row>
-            <Table.Cell sortBy="name">
+            <Table.HeadCell sortBy="name">
               Name <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="email">
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
               Email <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="ipAddress">
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
               IP Address <Table.SortIcon />
-            </Table.Cell>
+            </Table.HeadCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body data={users}>
           {users =>
             users.map((user, i) => (
               <Table.Row key={user.id}>

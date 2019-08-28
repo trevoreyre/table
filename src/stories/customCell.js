@@ -1,35 +1,36 @@
 import React from 'react'
 import Table from '../index'
 import users from './users.json'
+import placeholder from './placeholder.png'
 
 export default {
   title: 'Basic|Custom cell',
 }
 
 export const CustomCell = () => (
-  <Table.Provider data={users}>
+  <Table.Provider>
     <Table.Table>
       <Table.Header>
         <Table.Row>
-          <Table.Cell />
-          <Table.Cell sortBy="name">
+          <Table.HeadCell />
+          <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
             Email <Table.SortIcon />
-          </Table.Cell>
-          <Table.Cell sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
             IP Address <Table.SortIcon />
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body data={users}>
         {users =>
           users.map(user => (
             <Table.Row key={user.id}>
               <Table.Cell>
                 <img
-                  src={user.avatar}
+                  src={user.avatar || placeholder}
                   alt="User profile"
                   width="80"
                   height="80"
@@ -43,7 +44,8 @@ export const CustomCell = () => (
         }
       </Table.Body>
     </Table.Table>
+    <Table.Pagination perPage={10} />
   </Table.Provider>
 )
 
-CustomCell.story = { name: 'custom cell' }
+CustomCell.story = { name: 'Custom cell' }

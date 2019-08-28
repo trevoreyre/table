@@ -33,15 +33,15 @@ export const MaterialUi = () => (
     <Table.Table as={MuiTable}>
       <Table.Header as={MuiTableHead}>
         <Table.Row as={MuiTableRow}>
-          <Table.Cell as={MuiTableCell} sortBy="name">
+          <Table.HeadCell as={MuiTableCell} sortBy="name">
             Name
-          </Table.Cell>
-          <Table.Cell as={MuiTableCell} sortBy="email">
+          </Table.HeadCell>
+          <Table.HeadCell as={MuiTableCell} sortBy="email">
             Email
-          </Table.Cell>
-          <Table.Cell as={MuiTableCell} sortBy="ipAddress">
+          </Table.HeadCell>
+          <Table.HeadCell as={MuiTableCell} sortBy="ipAddress">
             IP Address
-          </Table.Cell>
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body as={MuiTableBody}>

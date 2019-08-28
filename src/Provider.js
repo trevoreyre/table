@@ -7,27 +7,18 @@ import { TableContext, DispatchContext, DataContext } from './Context'
 // Try making controllable only on sub-components
 
 // CONTROLLABLE
-// [ ] page
-//     [x] on Provider
-//     [ ] on Pagination
-// [ ] perPage
-//     [ ] on Provider
-//     [ ] on Pagination
-// [ ] onChangePage
-//     [ ] on Provider
-//     [ ] on Pagination (as onChange)
-// [ ] onChangePerPage
-//     [ ] on Provider
-//     [ ] on Pagination
-// [ ] searchValue
-//     [ ] on Provider
-//     [ ] on Search (as value/defaultValue)
-// [ ] onChangeSearchValue
-//     [ ] on Provider
-//     [ ] on Search (as onChange)
-// [ ] sortBy
-// [ ] sortDirection
-// [ ] onSort
+// [-] data - Body (defaultData???)
+// [x] page - Pagination
+// [x] perPage - [x] Pagination, [x] PerPage (as value)
+// [x] onChangePage - Pagination (as onChange)
+// [x] onChangePerPage - PerPage (as onChange)
+// [x] searchValue - Search (as value)
+// [x] searchKeys - Search
+// [x] search - Search
+// [ ] sortBy - Header
+// [ ] sortDirection - Header
+// [ ] onSort - [ ] Header, [ ] HeadCell (as onClick)
+// [ ] sort - [ ] Header, [ ] HeadCell
 // [ ] selected
 // [ ] onSelect
 // [ ] onSelectAll
@@ -72,8 +63,11 @@ const defaultSort = ({ sortBy, sortDirection, data }) => {
 const initialState = {
   data: [],
   dataIsControlled: false,
+  dispatchData: () => {},
   initialData: [],
   onChangePage: undefined,
+  onChangePerPage: undefined,
+  onSort: undefined,
   page: 1,
   pageIsControlled: false,
   perPage: undefined,
@@ -85,16 +79,23 @@ const initialState = {
   searchValueIsControlled: false,
   selected: [],
   selectedIsControlled: false,
-  sort: defaultSort,
-  sortIsControlled: false,
+  defaultSort,
+  sort: undefined,
   sortBy: undefined,
   sortByIsControlled: false,
   sortDirection: 'asc',
   sortDirectionIsControlled: false,
-  dispatchData: () => {},
+  sortIsControlled: false,
 }
 
-const dataProps = ['searchValue', 'sortBy', 'sortDirection']
+// List of props that should trigger the dataReducer to recalculate data
+const dataProps = [
+  'data',
+  'searchKeys',
+  'searchValue',
+  'sortBy',
+  'sortDirection',
+]
 
 const initialize = props => {
   console.log('initialize:', props)
@@ -124,8 +125,9 @@ const searchData = curry(({ search, searchValue, searchKeys }, data) => {
   return search({ searchValue, searchKeys, data })
 })
 
-const sortData = curry(({ sort, sortBy, sortDirection }, data) => {
-  return sort({ sortBy, sortDirection, data })
+const sortData = curry(({ defaultSort, sort, sortBy, sortDirection }, data) => {
+  const sortFn = sort || defaultSort
+  return sortFn({ sortBy, sortDirection, data })
 })
 
 const getData = state =>
@@ -154,10 +156,10 @@ const reducer = (state, action) => {
     }
     case 'syncProps': {
       const newState = { ...state, ...action.props }
-      let updateData = true
+      let updateData = false
       Object.keys(action.props).forEach(prop => {
-        if (state[`${prop}Initialized`] && !dataProps.includes(prop)) {
-          updateData = false
+        if (dataProps.includes(prop)) {
+          updateData = true
         }
       })
       if (updateData) {
@@ -166,27 +168,30 @@ const reducer = (state, action) => {
       return newState
     }
     case 'sort': {
+      if (state.sortByIsControlled && state.sortDirectionIsControlled) {
+        return state
+      }
       const newState = {
         ...state,
+        sort: action.sort,
         sortBy: action.sortBy,
         sortDirection: action.sortDirection,
         page: 1,
       }
-      return {
-        ...newState,
-        ...getData(newState),
-      }
+      state.dispatchData({ type: 'getData', state: newState })
+      return newState
     }
     case 'search': {
+      if (state.searchValueIsControlled) {
+        return state
+      }
       const newState = {
         ...state,
         searchValue: action.searchValue,
         page: 1,
       }
-      return {
-        ...newState,
-        ...getData(newState),
-      }
+      state.dispatchData({ type: 'getData', state: newState })
+      return newState
     }
     case 'changePage': {
       if (state.pageIsControlled) {

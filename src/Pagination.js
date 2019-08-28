@@ -42,14 +42,13 @@ const Pagination = props => {
   const state = useTableState()
   const data = useTableData()
 
-  const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
-  const safePage = Math.min(totalPages, Math.max(1, state.page))
-
   useSyncProps(
     { defaultPage, defaultPerPage, onChangePage: onChange, page, perPage },
     [page, perPage]
   )
 
+  const totalPages = state.perPage ? Math.ceil(data.length / state.perPage) : 1
+  const safePage = Math.min(totalPages, Math.max(1, state.page))
   const { firstPage, lastPage } = getFirstLastPage({
     length,
     page: safePage,

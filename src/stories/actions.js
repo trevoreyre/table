@@ -17,24 +17,24 @@ export const Inline = () => {
   }
 
   return (
-    <Table.Provider data={users} perPage={10}>
+    <Table.Provider>
       <Table.Search />
       <Table.Table>
         <Table.Header>
           <Table.Row>
-            <Table.Cell sortBy="name">
+            <Table.HeadCell sortBy="name">
               Name <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="email">
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
               Email <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell sortBy="ipAddress">
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
               IP Address <Table.SortIcon />
-            </Table.Cell>
-            <Table.Cell />
+            </Table.HeadCell>
+            <Table.HeadCell />
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body data={users}>
           {users =>
             users.map(user => (
               <Table.Row key={user.id}>
@@ -49,7 +49,7 @@ export const Inline = () => {
           }
         </Table.Body>
       </Table.Table>
-      <Table.Pagination />
+      <Table.Pagination perPage={10} />
     </Table.Provider>
   )
 }
@@ -62,6 +62,7 @@ export const Global = () => {
     event.preventDefault()
     const data = new FormData(event.target)
     const newUser = {
+      id: Date.now(),
       name: data.get('name'),
       email: data.get('email'),
       ipAddress: data.get('ipAddress'),
@@ -95,7 +96,7 @@ export const Global = () => {
         </form>
       </Dialog>
 
-      <Table.Provider data={users}>
+      <Table.Provider>
         <Table.Search />
         <button onClick={() => setOpen(true)} style={{ marginLeft: '24px' }}>
           Add user
@@ -103,18 +104,18 @@ export const Global = () => {
         <Table.Table>
           <Table.Header>
             <Table.Row>
-              <Table.Cell sortBy="name">
+              <Table.HeadCell sortBy="name">
                 Name <Table.SortIcon />
-              </Table.Cell>
-              <Table.Cell sortBy="email">
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="email">
                 Email <Table.SortIcon />
-              </Table.Cell>
-              <Table.Cell sortBy="ipAddress">
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="ipAddress">
                 IP Address <Table.SortIcon />
-              </Table.Cell>
+              </Table.HeadCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
+          <Table.Body data={users}>
             {users =>
               users.map(user => (
                 <Table.Row key={user.id}>
@@ -126,7 +127,7 @@ export const Global = () => {
             }
           </Table.Body>
         </Table.Table>
-        <Table.Pagination />
+        <Table.Pagination perPage={10} />
       </Table.Provider>
     </>
   )

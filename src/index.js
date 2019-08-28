@@ -2,6 +2,7 @@ import Body from './Body'
 import Cell from './Cell'
 import Checkbox from './Checkbox'
 import Footer from './Footer'
+import HeadCell from './HeadCell'
 import Header from './Header'
 import PageButton from './PageButton'
 import Pagination from './Pagination'
@@ -17,6 +18,7 @@ const Components = {
   Cell,
   Checkbox,
   Footer,
+  HeadCell,
   Header,
   PageButton,
   Pagination,
@@ -34,6 +36,7 @@ export {
   Cell as TableCell,
   Checkbox as TableCheckbox,
   Footer as TableFooter,
+  HeadCell as TableHeadCell,
   Header as TableHeader,
   PageButton as TablePageButton,
   Pagination as TablePagination,

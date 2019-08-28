@@ -35,18 +35,18 @@ export const Selectable = () => {
           <Table.Table>
             <Table.Header>
               <Table.Row>
-                <Table.Cell>
+                <Table.HeadCell>
                   <Table.Checkbox value="id" />
-                </Table.Cell>
-                <Table.Cell sortBy="name">
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="name">
                   Name <Table.SortIcon />
-                </Table.Cell>
-                <Table.Cell sortBy="email">
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="email">
                   Email <Table.SortIcon />
-                </Table.Cell>
-                <Table.Cell sortBy="ipAddress">
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="ipAddress">
                   IP Address <Table.SortIcon />
-                </Table.Cell>
+                </Table.HeadCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>

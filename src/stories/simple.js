@@ -9,9 +9,9 @@ export const Simple = () => (
   <Table.Table>
     <Table.Header>
       <Table.Row>
-        <Table.Cell>Header 1</Table.Cell>
-        <Table.Cell>Header 2</Table.Cell>
-        <Table.Cell>Header 3</Table.Cell>
+        <Table.HeadCell>Header 1</Table.HeadCell>
+        <Table.HeadCell>Header 2</Table.HeadCell>
+        <Table.HeadCell>Header 3</Table.HeadCell>
       </Table.Row>
     </Table.Header>
     <Table.Body>
