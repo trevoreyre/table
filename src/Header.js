@@ -8,8 +8,6 @@ const Header = props => {
     children,
     defaultSortBy,
     defaultSortDirection,
-    onSelectAll,
-    onSelectPage,
     onSort,
     sort,
     sortBy,
@@ -22,8 +20,6 @@ const Header = props => {
       defaultSort: sort,
       defaultSortBy,
       defaultSortDirection,
-      onSelectAll,
-      onSelectPage,
       onSort,
       sortBy,
       sortDirection,
@@ -33,7 +29,9 @@ const Header = props => {
 
   return (
     <LevelContext.Provider value="header">
-      <As {...other}>{children}</As>
+      <As data-table-header {...other}>
+        {children}
+      </As>
     </LevelContext.Provider>
   )
 }

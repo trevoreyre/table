@@ -1,4 +1,5 @@
 import React, { useContext, useLayoutEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import {
   LevelContext,
   useTableState,
@@ -7,17 +8,18 @@ import {
 } from './Context'
 
 const Checkbox = props => {
-  const { as: As = 'input', onChange, select = 'page', value, ...other } = props
+  const level = useContext(LevelContext)
+  const {
+    as: As = 'input',
+    onChange,
+    type = level === 'header' ? 'selectPage' : 'select',
+    value,
+    ...other
+  } = props
   const state = useTableState()
   const dispatch = useTableDispatch()
-  const level = useContext(LevelContext)
   const inputRef = useRef(null)
-  const type =
-    level === 'header' && select === 'all'
-      ? 'selectAll'
-      : level === 'header' && select === 'page'
-      ? 'selectPage'
-      : 'select'
+
   const data = useTableData({ paginated: type === 'selectPage' })
 
   useLayoutEffect(() => {
@@ -36,25 +38,13 @@ const Checkbox = props => {
 
   const handleChange = event => {
     const checked = event.target.checked
+    const selected = type === 'select' ? value : data.map(item => item[value])
 
     if (!state.selectedIsControlled) {
-      if (type === 'selectAll' || type === 'selectPage') {
-        dispatch({ type, checked, selected: data.map(item => item[value]) })
-      } else {
-        dispatch({ type, checked, selected: value })
-      }
-    }
-    if (type === 'selectAll' && state.onSelectAll) {
-      state.onSelectAll(checked, data.map(item => item[value]))
-    }
-    if (type === 'selectPage' && state.onSelectPage) {
-      state.onSelectPage(checked, data.map(item => item[value]))
-    }
-    if (type === 'select' && state.onSelect) {
-      state.onSelect(checked, value)
+      dispatch({ type, checked, selected })
     }
     if (onChange) {
-      onChange(event, value, checked)
+      onChange(event, checked, selected)
     }
   }
 
@@ -62,11 +52,13 @@ const Checkbox = props => {
     type === 'select'
       ? state.selected.includes(value)
       : type === 'selectAll'
-      ? state.selected.length === data.length
-      : data.every(item => state.selected.includes(item[value]))
+      ? data.length > 0 && state.selected.length === data.length
+      : data.length > 0 &&
+        data.every(item => state.selected.includes(item[value]))
 
   return (
     <As
+      data-table-checkbox
       type="checkbox"
       checked={checked}
       ref={inputRef}
@@ -75,6 +67,10 @@ const Checkbox = props => {
       {...other}
     />
   )
+}
+
+Checkbox.propTypes = {
+  type: PropTypes.oneOf(['select', 'selectPage', 'selectAll']),
 }
 
 export default Checkbox

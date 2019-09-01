@@ -53,7 +53,12 @@ const PageButton = props => {
   }
 
   return (
-    <As disabled={disabled} onClick={handleClick} {...other}>
+    <As
+      data-table-page-button
+      disabled={disabled}
+      onClick={handleClick}
+      {...other}
+    >
       {children}
     </As>
   )

@@ -6,7 +6,9 @@ const Footer = props => {
 
   return (
     <LevelContext.Provider value="footer">
-      <As {...other}>{children}</As>
+      <As data-table-footer {...other}>
+        {children}
+      </As>
     </LevelContext.Provider>
   )
 }

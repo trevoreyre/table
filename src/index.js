@@ -11,7 +11,9 @@ import Provider from './Provider'
 import Row from './Row'
 import Search from './Search'
 import SortIcon from './SortIcon'
+import SortLabel from './SortLabel'
 import Table from './Table'
+import Text from './Text'
 
 const Components = {
   Body,
@@ -27,7 +29,9 @@ const Components = {
   Row,
   Search,
   SortIcon,
+  SortLabel,
   Table,
+  Text,
 }
 
 export default Components
@@ -45,5 +49,7 @@ export {
   Row as TableRow,
   Search as TableSearch,
   SortIcon as TableSortIcon,
+  SortLabel as TableSortLabel,
   Table,
+  Text as TableText,
 }

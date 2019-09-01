@@ -44,6 +44,44 @@ export const Selectable = () => (
   </Table.Provider>
 )
 
+export const SelectByRow = () => (
+  <Table.Provider>
+    <Table.Search />
+    <Table.Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeadCell />
+          <Table.HeadCell sortBy="name">
+            Name <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
+            Email <Table.SortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
+            IP Address <Table.SortIcon />
+          </Table.HeadCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body data={users} data-table-hover>
+        {users =>
+          users.map(user => (
+            <Table.Row key={user.id} select={user.id}>
+              <Table.Cell>
+                <Table.Checkbox value={user.id} />
+              </Table.Cell>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.ipAddress}</Table.Cell>
+            </Table.Row>
+          ))
+        }
+      </Table.Body>
+    </Table.Table>
+    <Table.Pagination perPage={10} />
+  </Table.Provider>
+)
+SelectByRow.story = { name: 'Select by row' }
+
 export const SelectAll = () => (
   <Table.Provider>
     <Table.Search />
@@ -51,7 +89,7 @@ export const SelectAll = () => (
       <Table.Header>
         <Table.Row>
           <Table.HeadCell>
-            <Table.Checkbox select="all" value="id" />
+            <Table.Checkbox type="selectAll" value="id" />
           </Table.HeadCell>
           <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
@@ -91,7 +129,7 @@ export const SelectPage = () => (
       <Table.Header>
         <Table.Row>
           <Table.HeadCell>
-            <Table.Checkbox select="page" value="id" />
+            <Table.Checkbox value="id" />
           </Table.HeadCell>
           <Table.HeadCell sortBy="name">
             Name <Table.SortIcon />
@@ -125,12 +163,12 @@ export const SelectPage = () => (
 SelectPage.story = { name: 'Select page' }
 
 const TableExample = () => {
-  const [usersState, setUsers] = useState(users)
+  const [currentUsers, setCurrentUsers] = useState(users)
   const state = useTableState()
   const dispatch = useTableDispatch()
 
   const handleDeleteClick = selected => () => {
-    setUsers(users.filter(user => !selected.includes(user.id)))
+    setCurrentUsers(currentUsers.filter(user => !selected.includes(user.id)))
     dispatch({ type: 'selectAll', checked: false })
   }
 
@@ -149,7 +187,7 @@ const TableExample = () => {
         <Table.Header>
           <Table.Row>
             <Table.HeadCell>
-              <Table.Checkbox select="page" value="id" />
+              <Table.Checkbox value="id" />
             </Table.HeadCell>
             <Table.HeadCell sortBy="name">
               Name <Table.SortIcon />
@@ -162,7 +200,7 @@ const TableExample = () => {
             </Table.HeadCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body data={usersState}>
+        <Table.Body data={currentUsers}>
           {users =>
             users.map(user => (
               <Table.Row key={user.id}>

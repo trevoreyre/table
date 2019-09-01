@@ -1,6 +1,7 @@
 import { addDecorator, addParameters, configure } from '@storybook/react'
 import { withConsole } from '@storybook/addon-console'
 import { withStyles } from 'storybook-addon-styles/react'
+import '../src/style.css'
 
 addDecorator((story, context) => withConsole()(story)(context))
 addDecorator(withStyles)

@@ -7,6 +7,7 @@ import {
   difference,
   orderBy,
   union,
+  xor,
 } from 'lodash/fp'
 import Fuse from 'fuse.js'
 import { TableContext, DispatchContext, DataContext } from './Context'
@@ -27,9 +28,9 @@ import { TableContext, DispatchContext, DataContext } from './Context'
 // [x] onSort - [x] Header, [x] HeadCell (as onClick)
 // [x] sort - [x] Header, [x] HeadCell
 // [x] selected - Body
-// [x] onSelect - Body
-// [x] onSelectAll - Header
-// [x] onSelectPage - Header
+// [x] onSelect - Checkbox (as onChange)
+// [x] onSelectAll - Checkbox (type === 'selectAll' as onChange)
+// [x] onSelectPage - Checkbox (type === 'selectPage' as onChange)
 
 // Should data be controllable?
 //
@@ -218,7 +219,7 @@ const reducer = (state, action) => {
         page: 1,
       }
     }
-    case 'select':
+    case 'select': {
       if (state.selectedIsControlled) {
         return state
       }
@@ -228,7 +229,19 @@ const reducer = (state, action) => {
           ? [...state.selected, action.selected]
           : state.selected.filter(value => value !== action.selected),
       }
-    case 'selectPage':
+    }
+    case 'selectToggle': {
+      if (state.selectedIsControlled) {
+        return state
+      }
+      return {
+        ...state,
+        selected: state.selected.includes(action.selected)
+          ? state.selected.filter(item => item !== action.selected)
+          : [...state.selected, action.selected],
+      }
+    }
+    case 'selectPage': {
       if (state.selectedIsControlled) {
         return state
       }
@@ -238,7 +251,8 @@ const reducer = (state, action) => {
           ? union(action.selected, state.selected)
           : difference(state.selected, action.selected),
       }
-    case 'selectAll':
+    }
+    case 'selectAll': {
       if (state.selectedIsControlled) {
         return state
       }
@@ -246,6 +260,7 @@ const reducer = (state, action) => {
         ...state,
         selected: action.checked ? action.selected : [],
       }
+    }
     default:
       return state
   }
@@ -276,30 +291,6 @@ const Provider = props => {
 
 Provider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  data: PropTypes.any,
-  defaultPage: PropTypes.number,
-  defaultPerPage: PropTypes.number,
-  defaultSearchValue: PropTypes.string,
-  defaultSelected: PropTypes.array,
-  defaultSortBy: PropTypes.string,
-  defaultSortDirection: PropTypes.oneOf(['asc', 'desc']),
-  onChangePage: PropTypes.func,
-  onChangePerPage: PropTypes.func,
-  onSearch: PropTypes.func, // onChangeSearchValue???
-  onSelect: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectClear: PropTypes.func,
-  onSelectNone: PropTypes.func,
-  onSort: PropTypes.func,
-  page: PropTypes.number,
-  perPage: PropTypes.number,
-  search: PropTypes.func,
-  searchKeys: PropTypes.array,
-  searchValue: PropTypes.string,
-  selected: PropTypes.array,
-  sort: PropTypes.func,
-  sortBy: PropTypes.string,
-  sortDirection: PropTypes.oneOf(['asc', 'desc']),
 }
 
 export default Provider

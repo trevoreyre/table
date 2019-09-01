@@ -1,22 +1,97 @@
 import React, { useContext } from 'react'
 import { SortContext } from './Context'
 
+const defaultInactiveIcon = (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6 15L12 21L18 15M18 9L12 3L6 9"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)
+
+const defaultAscIcon = (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M18 9L12 3L6 9"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)
+
+const defaultDescIcon = (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6 15L12 21L18 15"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)
+
 const SortIcon = props => {
-  const { as: As = 'span', ...other } = props
+  const {
+    as: As = 'span',
+    ascIcon = defaultAscIcon,
+    children,
+    descIcon = defaultDescIcon,
+    inactiveIcon = defaultInactiveIcon,
+    ...other
+  } = props
   const { active, sortDirection } = useContext(SortContext)
 
-  const style = {
-    display: 'inline-block',
-    opacity: active ? '1' : '0',
-    width: '24px',
-    height: '24px',
-    transform: `rotate(${
-      sortDirection === 'desc' ? '180deg' : '0'
-    }) scale(0.75)`,
-    backgroundImage: `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi11cCI+PHBvbHlsaW5lIHBvaW50cz0iMTggMTUgMTIgOSA2IDE1Ij48L3BvbHlsaW5lPjwvc3ZnPg==")`,
+  const dataAttributes = {
+    ...(active && { [`data-table-sort-${sortDirection}`]: true }),
   }
 
-  return <As style={style} {...other} />
+  const icon =
+    active === false
+      ? inactiveIcon
+      : sortDirection === 'asc'
+      ? ascIcon
+      : descIcon
+
+  if (children === undefined) {
+    return (
+      <As data-table-sort-icon {...dataAttributes} {...other}>
+        {icon}
+      </As>
+    )
+  }
+
+  return (
+    <As data-table-sort-icon {...dataAttributes} {...other}>
+      {typeof children === 'function'
+        ? children({ active, sortDirection })
+        : children}
+    </As>
+  )
 }
 
 export default SortIcon

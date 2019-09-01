@@ -34,7 +34,14 @@ const Search = props => {
     }
   }
 
-  return <As onChange={handleChange} value={state.searchValue} {...other} />
+  return (
+    <As
+      data-table-search
+      onChange={handleChange}
+      value={state.searchValue}
+      {...other}
+    />
+  )
 }
 
 export default Search

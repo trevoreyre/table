@@ -34,7 +34,12 @@ const PerPage = props => {
   }
 
   return (
-    <As onChange={handleChange} value={state.perPage} {...other}>
+    <As
+      data-table-per-page
+      onChange={handleChange}
+      value={state.perPage}
+      {...other}
+    >
       {children}
     </As>
   )

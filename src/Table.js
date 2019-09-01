@@ -3,7 +3,11 @@ import React from 'react'
 const Table = props => {
   const { as: As = 'table', children, ...other } = props
 
-  return <As {...other}>{children}</As>
+  return (
+    <As data-table {...other}>
+      {children}
+    </As>
+  )
 }
 
 export default Table

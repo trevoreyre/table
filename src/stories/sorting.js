@@ -12,16 +12,24 @@ export const Sorting = () => (
       <Table.Header>
         <Table.Row>
           <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
+            <Table.SortLabel>
+              Name <Table.SortIcon />
+            </Table.SortLabel>
           </Table.HeadCell>
           <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
+            <Table.SortLabel>
+              Email <Table.SortIcon />
+            </Table.SortLabel>
           </Table.HeadCell>
           <Table.HeadCell sortBy="age">
-            Age <Table.SortIcon />
+            <Table.SortLabel>
+              Age <Table.SortIcon />
+            </Table.SortLabel>
           </Table.HeadCell>
           <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
+            <Table.SortLabel>
+              IP Address <Table.SortIcon />
+            </Table.SortLabel>
           </Table.HeadCell>
         </Table.Row>
       </Table.Header>
@@ -47,16 +55,19 @@ export const DefaultSort = () => (
       <Table.Header defaultSortBy="email" defaultSortDirection="asc">
         <Table.Row>
           <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
+            <Table.SortIcon />
+            <Table.Text>Name</Table.Text>
           </Table.HeadCell>
           <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
+            <Table.SortIcon />
+            <Table.Text>Email</Table.Text>
           </Table.HeadCell>
           <Table.HeadCell sortBy="age">
-            Age <Table.SortIcon />
+            <Table.SortIcon /> <Table.Text>Age</Table.Text>
           </Table.HeadCell>
           <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
+            <Table.SortIcon />
+            <Table.Text>IP Address</Table.Text>
           </Table.HeadCell>
         </Table.Row>
       </Table.Header>
@@ -101,7 +112,7 @@ export const Controlled = () => {
 
   return (
     <>
-      <fieldset>
+      <fieldset style={{ border: 'none' }}>
         <legend>Sort by</legend>
         <label style={{ marginRight: '16px' }}>
           <input
@@ -144,7 +155,7 @@ export const Controlled = () => {
           IP Address
         </label>
       </fieldset>
-      <fieldset>
+      <fieldset style={{ border: 'none' }}>
         <legend>Sort direction</legend>
         <label style={{ marginRight: '16px' }}>
           <input

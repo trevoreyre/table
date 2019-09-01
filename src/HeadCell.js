@@ -6,6 +6,10 @@ const HeadCell = props => {
   const state = useTableState()
   const dispatch = useTableDispatch()
 
+  const dataAttributes = {
+    ...(sortBy && { 'data-table-sortable': true }),
+  }
+
   const handleClick = event => {
     if (!sortBy) {
       if (onClick) onClick(event)
@@ -53,7 +57,12 @@ const HeadCell = props => {
 
   return (
     <SortContext.Provider value={contextValue}>
-      <As onClick={handleClick} {...other}>
+      <As
+        data-table-head-cell
+        {...dataAttributes}
+        onClick={handleClick}
+        {...other}
+      >
         {children}
       </As>
     </SortContext.Provider>

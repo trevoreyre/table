@@ -14,6 +14,8 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
   LastPage,
+  ArrowDownward,
+  ArrowUpward,
 } from '@material-ui/icons'
 import Table from '../index'
 import users from './users.json'
@@ -21,6 +23,14 @@ import users from './users.json'
 export default {
   title: 'Styling|material-ui',
 }
+
+const MuiTableSortIcon = () => (
+  <Table.SortIcon
+    inactiveIcon={<ArrowUpward style={{ width: '18px', height: '18px' }} />}
+    ascIcon={<ArrowUpward style={{ width: '18px', height: '18px' }} />}
+    descIcon={<ArrowDownward style={{ width: '18px', height: '18px' }} />}
+  />
+)
 
 export const MaterialUi = () => (
   <Table.Provider>
@@ -34,13 +44,13 @@ export const MaterialUi = () => (
       <Table.Header as={MuiTableHead}>
         <Table.Row as={MuiTableRow}>
           <Table.HeadCell as={MuiTableCell} sortBy="name">
-            Name
+            Name <MuiTableSortIcon />
           </Table.HeadCell>
           <Table.HeadCell as={MuiTableCell} sortBy="email">
-            Email
+            Email <MuiTableSortIcon />
           </Table.HeadCell>
           <Table.HeadCell as={MuiTableCell} sortBy="ipAddress">
-            IP Address
+            IP Address <MuiTableSortIcon />
           </Table.HeadCell>
         </Table.Row>
       </Table.Header>

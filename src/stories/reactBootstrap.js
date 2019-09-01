@@ -11,6 +11,15 @@ export default {
   title: 'Styling|react-bootstrap',
 }
 
+const BSSortIcon = () => (
+  <Table.SortIcon
+    style={{ opacity: 0.4, marginLeft: '4px' }}
+    inactiveIcon={<i className="fas fa-sort" />}
+    ascIcon={<i className="fas fa-sort-up" />}
+    descIcon={<i className="fas fa-sort-down" />}
+  />
+)
+
 export const ReactBootstrap = () => (
   <Table.Provider>
     <Table.Search
@@ -21,9 +30,15 @@ export const ReactBootstrap = () => (
     <Table.Table as={BSTable} striped>
       <Table.Header>
         <Table.Row>
-          <Table.HeadCell sortBy="name">Name</Table.HeadCell>
-          <Table.HeadCell sortBy="email">Email</Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">IP Address</Table.HeadCell>
+          <Table.HeadCell sortBy="name">
+            Name <BSSortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="email">
+            Email <BSSortIcon />
+          </Table.HeadCell>
+          <Table.HeadCell sortBy="ipAddress">
+            IP Address <BSSortIcon />
+          </Table.HeadCell>
         </Table.Row>
       </Table.Header>
       <Table.Body data={users}>

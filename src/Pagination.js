@@ -70,7 +70,7 @@ const Pagination = props => {
 
   if (children === undefined) {
     return totalPages === 1 ? null : (
-      <As {...other}>
+      <As data-table-pagination {...other}>
         <PageButton value="prev">Previous</PageButton>
         {pageList.map((value, i) => {
           if (value === '...')
@@ -91,7 +91,7 @@ const Pagination = props => {
   }
 
   return (
-    <As {...other}>
+    <As data-table-pagination {...other}>
       {typeof children === 'function'
         ? children({
             page: safePage,
