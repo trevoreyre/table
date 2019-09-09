@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Table from '../index'
-import { useTableState, useTableDispatch } from '../Context'
-import users from './users.json'
+import Table from '../../index'
+import { useTableState, useTableDispatch } from '../../Context'
+import users from '../users.json'
 
 export default {
-  title: 'Basic|Selectable',
+  title: 'Stories|Selectable',
 }
 
 export const Selectable = () => (

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Table from '../index'
-import users from './users.json'
+import Table from '../../index'
+import users from '../users.json'
 
 export default {
-  title: 'Basic|Pagination',
+  title: 'Stories|Pagination',
 }
 
 export const Pagination = () => (

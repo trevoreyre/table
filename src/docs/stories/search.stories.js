@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import fuzzysort from 'fuzzysort'
-import Table from '../index'
-import users from './users.json'
+import Table from '../../index'
+import users from '../users.json'
 
 export default {
-  title: 'Basic|Search',
+  title: 'Stories|Search',
 }
 
 export const Search = () => (

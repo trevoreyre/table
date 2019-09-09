@@ -1,10 +1,10 @@
 import React from 'react'
-import Table from '../index'
-import users from './users.json'
-import placeholder from './placeholder.png'
+import Table from '../../index'
+import users from '../users.json'
+import placeholder from '../placeholder.png'
 
 export default {
-  title: 'Basic|Custom cell',
+  title: 'Stories|Custom cell',
 }
 
 export const CustomCell = () => (

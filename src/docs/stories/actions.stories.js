@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Dialog } from '@material-ui/core'
-import Table from '../index'
-import usersData from './users.json'
+import Table from '../../index'
+import usersData from '../users.json'
 
 export default {
-  title: 'Basic|Actions',
+  title: 'Stories|Actions',
 }
 
 export const Inline = () => {

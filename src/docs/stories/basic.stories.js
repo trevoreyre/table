@@ -1,8 +1,8 @@
 import React from 'react'
-import Table from '../index'
+import Table from '../../index'
 
 export default {
-  title: 'Basic|Simple',
+  title: 'Stories|Basic',
 }
 
 export const Simple = () => (
@@ -58,7 +58,7 @@ export const Striped = () => (
         <Table.HeadCell>Age</Table.HeadCell>
       </Table.Row>
     </Table.Header>
-    <Table.Body data-table-striped>
+    <Table.Body striped>
       <Table.Row>
         <Table.Cell>Torey Allsep</Table.Cell>
         <Table.Cell>tallsep0@ask.com</Table.Cell>
@@ -102,7 +102,7 @@ export const Hover = () => (
         <Table.HeadCell>Age</Table.HeadCell>
       </Table.Row>
     </Table.Header>
-    <Table.Body data-table-hover>
+    <Table.Body striped hover>
       <Table.Row>
         <Table.Cell>Torey Allsep</Table.Cell>
         <Table.Cell>tallsep0@ask.com</Table.Cell>
