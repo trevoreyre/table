@@ -8,16 +8,16 @@
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* [data-table-body][data-table-striped] [data-table-row] {
-  border: none;
-} */
+[data-table-body][data-table-striped] [data-table-row] {
+  border-color: rgba(0, 0, 0, 0.04);
+}
 
 [data-table-body][data-table-striped] [data-table-row]:nth-child(odd) [data-table-cell] {
-  background: #f6f9fc;
+  background: hsl(210, 38%, 98%);
 }
 
 [data-table-body][data-table-hover] [data-table-row]:hover [data-table-cell] {
-  background: #edf1f5;
+  background: hsl(210, 38%, 96%);
 }
 
 [data-table-head-cell] {
