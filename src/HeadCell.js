@@ -60,6 +60,7 @@ const HeadCell = props => {
       <As
         data-table-head-cell
         {...dataAttributes}
+        tabIndex={sortBy ? 0 : null}
         onClick={handleClick}
         {...other}
       >

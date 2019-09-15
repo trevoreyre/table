@@ -71,21 +71,32 @@ const Pagination = props => {
   if (children === undefined) {
     return totalPages === 1 ? null : (
       <As data-table-pagination {...other}>
-        <PageButton value="prev">Previous</PageButton>
+        <PageButton value="prev" aria-label="Previous page" />
+
         {pageList.map((value, i) => {
-          if (value === '...')
+          if (value === '...') {
             return (
               <PageButton key={value + i} disabled>
                 ...
               </PageButton>
             )
+          }
+          const dataAttribues = {
+            ...(safePage === value && { 'data-table-active': true }),
+          }
           return (
-            <PageButton key={value} value={value}>
-              {safePage === value ? <strong>{value}</strong> : value}
+            <PageButton
+              key={value}
+              value={value}
+              aria-label={`Page ${value}`}
+              {...dataAttribues}
+            >
+              {value}
             </PageButton>
           )
         })}
-        <PageButton value="next">Next</PageButton>
+
+        <PageButton value="next" aria-label="Next page" />
       </As>
     )
   }

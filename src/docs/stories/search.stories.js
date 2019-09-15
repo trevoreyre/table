@@ -9,33 +9,35 @@ export default {
 
 export const Search = () => (
   <Table.Provider>
-    <Table.Search placeholder="Search" />
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Search placeholder="Search" aria-label="Search" />
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
   </Table.Provider>
 )
 
@@ -59,65 +61,68 @@ export const CustomSearch = () => {
     <Table.Provider>
       <Table.Search
         placeholder="Search"
+        aria-label="Search"
         search={search}
         searchKeys={searchKeys}
       />
-      <Table.Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeadCell sortBy="name">
-              Name <Table.SortIcon />
-            </Table.HeadCell>
-            <Table.HeadCell sortBy="email">
-              Email <Table.SortIcon />
-            </Table.HeadCell>
-            <Table.HeadCell sortBy="ipAddress">
-              IP Address <Table.SortIcon />
-            </Table.HeadCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body data={users}>
-          {users =>
-            users.map((user, i) => (
-              <Table.Row key={user.id}>
-                <Table.Cell>
-                  {searchResults[i] && searchResults[i][0] ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: fuzzysort.highlight(searchResults[i][0]),
-                      }}
-                    />
-                  ) : (
-                    user.name
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  {searchResults[i] && searchResults[i][1] ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: fuzzysort.highlight(searchResults[i][1]),
-                      }}
-                    />
-                  ) : (
-                    user.email
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  {searchResults[i] && searchResults[i][2] ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: fuzzysort.highlight(searchResults[i][2]),
-                      }}
-                    />
-                  ) : (
-                    user.ipAddress
-                  )}
-                </Table.Cell>
-              </Table.Row>
-            ))
-          }
-        </Table.Body>
-      </Table.Table>
+      <Table.Container>
+        <Table.Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeadCell sortBy="name">
+                Name <Table.SortIcon />
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="email">
+                Email <Table.SortIcon />
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="ipAddress">
+                IP Address <Table.SortIcon />
+              </Table.HeadCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body data={users}>
+            {users =>
+              users.map((user, i) => (
+                <Table.Row key={user.id}>
+                  <Table.Cell>
+                    {searchResults[i] && searchResults[i][0] ? (
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: fuzzysort.highlight(searchResults[i][0]),
+                        }}
+                      />
+                    ) : (
+                      user.name
+                    )}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {searchResults[i] && searchResults[i][1] ? (
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: fuzzysort.highlight(searchResults[i][1]),
+                        }}
+                      />
+                    ) : (
+                      user.email
+                    )}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {searchResults[i] && searchResults[i][2] ? (
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: fuzzysort.highlight(searchResults[i][2]),
+                        }}
+                      />
+                    ) : (
+                      user.ipAddress
+                    )}
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            }
+          </Table.Body>
+        </Table.Table>
+      </Table.Container>
     </Table.Provider>
   )
 }

@@ -8,109 +8,117 @@ export default {
 
 export const Pagination = () => (
   <Table.Provider>
-    <Table.Search />
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Search placeholder="Search" aria-label="Search" />
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
     <Table.Pagination perPage={10} />
   </Table.Provider>
 )
 
 export const PerPageSelect = () => (
   <Table.Provider>
-    <label htmlFor="per-page" style={{ marginRight: '8px' }}>
-      Per page
-    </label>
-    <Table.PerPage id="per-page" defaultValue={10}>
-      <option value={10}>10</option>
-      <option value={25}>25</option>
-      <option value={50}>50</option>
-      <option value={100}>100</option>
-    </Table.PerPage>
-    <Table.Search style={{ marginLeft: '40px' }} />
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
-    <Table.Pagination />
+    <Table.Search placeholder="Search" aria-label="Search" />
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
+    <div className="toolbar">
+      <Table.Pagination as="span" />
+      <label htmlFor="per-page" className="ml-m mr-s">
+        Per page
+      </label>
+      <Table.PerPage id="per-page" defaultValue={10}>
+        <option value={10}>10</option>
+        <option value={25}>25</option>
+        <option value={50}>50</option>
+        <option value={100}>100</option>
+      </Table.PerPage>
+    </div>
   </Table.Provider>
 )
 PerPageSelect.story = { name: 'Per page select' }
 
 export const DefaultPage = () => (
   <Table.Provider>
-    <Table.Search />
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Search placeholder="Search" aria-label="Search" />
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
     <Table.Pagination perPage={10} defaultPage={11} />
   </Table.Provider>
 )
@@ -125,37 +133,44 @@ export const Controlled = () => {
 
   return (
     <>
-      <label>
+      <label htmlFor="page-input" className="ml-m mr-s">
         Page
-        <input type="number" value={page || ''} onChange={handleChange} />
       </label>
+      <Table.Input
+        id="page-input"
+        type="number"
+        value={page || ''}
+        onChange={handleChange}
+      />
       <Table.Provider>
-        <Table.Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeadCell sortBy="name">
-                Name <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="email">
-                Email <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="ipAddress">
-                IP Address <Table.SortIcon />
-              </Table.HeadCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body data={users}>
-            {users =>
-              users.map(user => (
-                <Table.Row key={user.id}>
-                  <Table.Cell>{user.name}</Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.ipAddress}</Table.Cell>
-                </Table.Row>
-              ))
-            }
-          </Table.Body>
-        </Table.Table>
+        <Table.Container>
+          <Table.Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeadCell sortBy="name">
+                  Name <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="email">
+                  Email <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="ipAddress">
+                  IP Address <Table.SortIcon />
+                </Table.HeadCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body data={users}>
+              {users =>
+                users.map(user => (
+                  <Table.Row key={user.id}>
+                    <Table.Cell>{user.name}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                    <Table.Cell>{user.ipAddress}</Table.Cell>
+                  </Table.Row>
+                ))
+              }
+            </Table.Body>
+          </Table.Table>
+        </Table.Container>
         <Table.Pagination
           perPage={10}
           page={page || 1}
@@ -168,51 +183,59 @@ export const Controlled = () => {
 
 export const CustomPagination = () => (
   <Table.Provider>
-    <Table.Search />
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
-    <Table.Pagination>
-      {({ page, totalPages }) => (
-        <>
-          <Table.PageButton value="first">{'<<'}</Table.PageButton>
-          <Table.PageButton value="prev">{'<'}</Table.PageButton>
-          {page}/{totalPages}
-          <Table.PageButton value="next">{'>'}</Table.PageButton>
-          <Table.PageButton value="last">{'>>'}</Table.PageButton>
-          <span>Per page</span>
-          <Table.PerPage defaultValue={25}>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </Table.PerPage>
-        </>
-      )}
-    </Table.Pagination>
+    <Table.Search placeholder="Search" aria-label="Search" />
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
+    <div className="toolbar end">
+      <label htmlFor="per-page" className="mr-s">
+        Per page
+      </label>
+      <Table.PerPage id="per-page" className="mr-l" defaultValue={10}>
+        <option value={10}>10</option>
+        <option value={25}>25</option>
+        <option value={50}>50</option>
+        <option value={100}>100</option>
+      </Table.PerPage>
+      <Table.Pagination>
+        {({ page, totalPages }) => (
+          <>
+            <span className="mr-l">
+              Page {page} of {totalPages}
+            </span>
+            <Table.PageButton value="first" aria-label="First page" />
+            <Table.PageButton value="prev" aria-label="Previous page" />
+            <Table.PageButton value="next" aria-label="Next page" />
+            <Table.PageButton value="last" aria-label="Last page" />
+          </>
+        )}
+      </Table.Pagination>
+    </div>
   </Table.Provider>
 )
 CustomPagination.story = { name: 'Custom pagination' }

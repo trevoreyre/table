@@ -5,8 +5,10 @@
     "email": "tallsep0@ask.com",
     "gender": "Female",
     "age": 62,
-    "avatar": null,
-    "ipAddress": "66.121.206.231"
+    "avatar": "https://robohash.org/minusassumendadolor.png?size=80x80&set=set1",
+    "ipAddress": "66.121.206.231",
+    "disabled": true,
+    "status": "kill"
   },
   {
     "id": "c29f12e8-e3b0-489a-8346-dceddce74465",
@@ -14,8 +16,9 @@
     "email": "gfullalove1@histats.com",
     "gender": null,
     "age": 78,
-    "avatar": null,
-    "ipAddress": null
+    "avatar": "https://robohash.org/autnonexplicabo.bmp?size=80x80&set=set1",
+    "ipAddress": null,
+    "status": "kill"
   },
   {
     "id": "4ec72de5-0237-471d-9b4b-cd9569a2fc4e",
@@ -23,8 +26,9 @@
     "email": "agoodhand2@seattletimes.com",
     "gender": "Male",
     "age": 31,
-    "avatar": "https://robohash.org/rationequisrerum.png?size=80x80&set=set1",
-    "ipAddress": "176.170.199.147"
+    "avatar": null,
+    "ipAddress": "176.170.199.147",
+    "status": "neutral"
   },
   {
     "id": "0676e2b9-dd50-4cbf-95aa-e6067f04f6cc",
@@ -32,8 +36,9 @@
     "email": "jrenoden3@hatena.ne.jp",
     "gender": "Male",
     "age": 20,
-    "avatar": null,
-    "ipAddress": "12.67.59.43"
+    "avatar": "https://robohash.org/rationequisrerum.png?size=80x80&set=set1",
+    "ipAddress": "12.67.59.43",
+    "status": "kill"
   },
   {
     "id": "cc88c4ed-3e95-4eef-b89d-22147f6df938",
@@ -41,8 +46,9 @@
     "email": "rmctrustey4@tinypic.com",
     "gender": "Male",
     "age": 70,
-    "avatar": "https://robohash.org/autnonexplicabo.bmp?size=80x80&set=set1",
-    "ipAddress": "249.118.54.69"
+    "avatar": null,
+    "ipAddress": "249.118.54.69",
+    "status": "friendly"
   },
   {
     "id": "4b62699b-8364-4857-ba44-8773678ad634",
@@ -51,7 +57,8 @@
     "gender": "Male",
     "age": 57,
     "avatar": "https://robohash.org/etmaximevoluptatum.bmp?size=80x80&set=set1",
-    "ipAddress": null
+    "ipAddress": null,
+    "status": "kill"
   },
   {
     "id": "1bef0de8-151b-4327-aec9-8feec867f0c8",

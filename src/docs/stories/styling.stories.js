@@ -45,32 +45,34 @@ export const MaterialUi = () => (
       style={{ width: '300px', marginBottom: '16px' }}
       margin="dense"
     />
-    <Table.Table as={MuiTable}>
-      <Table.Header as={MuiTableHead}>
-        <Table.Row as={MuiTableRow}>
-          <Table.HeadCell as={MuiTableCell} sortBy="name">
-            Name <MuiTableSortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell as={MuiTableCell} sortBy="email">
-            Email <MuiTableSortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell as={MuiTableCell} sortBy="ipAddress">
-            IP Address <MuiTableSortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body as={MuiTableBody} data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id} as={MuiTableRow}>
-              <Table.Cell as={MuiTableCell}>{user.name}</Table.Cell>
-              <Table.Cell as={MuiTableCell}>{user.email}</Table.Cell>
-              <Table.Cell as={MuiTableCell}>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table as={MuiTable}>
+        <Table.Header as={MuiTableHead}>
+          <Table.Row as={MuiTableRow}>
+            <Table.HeadCell as={MuiTableCell} sortBy="name">
+              Name <MuiTableSortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell as={MuiTableCell} sortBy="email">
+              Email <MuiTableSortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell as={MuiTableCell} sortBy="ipAddress">
+              IP Address <MuiTableSortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body as={MuiTableBody} data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id} as={MuiTableRow}>
+                <Table.Cell as={MuiTableCell}>{user.name}</Table.Cell>
+                <Table.Cell as={MuiTableCell}>{user.email}</Table.Cell>
+                <Table.Cell as={MuiTableCell}>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
     <Table.Pagination style={{ marginTop: '24px' }}>
       {({ page, totalPages }) => (
         <>
@@ -126,32 +128,34 @@ export const ReactBootstrap = () => (
       style={{ maxWidth: '300px', marginBottom: '24px' }}
       placeholder="Search"
     />
-    <Table.Table as={BSTable} striped>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <BSSortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <BSSortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <BSSortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table as={BSTable} striped>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <BSSortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <BSSortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <BSSortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
     <Table.Pagination
       as={BSPagination}
       perPage={10}

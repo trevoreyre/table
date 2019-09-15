@@ -18,37 +18,41 @@ export const Inline = () => {
 
   return (
     <Table.Provider>
-      <Table.Search />
-      <Table.Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeadCell sortBy="name">
-              Name <Table.SortIcon />
-            </Table.HeadCell>
-            <Table.HeadCell sortBy="email">
-              Email <Table.SortIcon />
-            </Table.HeadCell>
-            <Table.HeadCell sortBy="ipAddress">
-              IP Address <Table.SortIcon />
-            </Table.HeadCell>
-            <Table.HeadCell />
-          </Table.Row>
-        </Table.Header>
-        <Table.Body data={users}>
-          {users =>
-            users.map(user => (
-              <Table.Row key={user.id}>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.ipAddress}</Table.Cell>
-                <Table.Cell>
-                  <button onClick={handleClickDelete(user)}>Delete</button>
-                </Table.Cell>
-              </Table.Row>
-            ))
-          }
-        </Table.Body>
-      </Table.Table>
+      <Table.Search placeholder="Search" aria-label="Search" />
+      <Table.Container>
+        <Table.Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeadCell sortBy="name">
+                Name <Table.SortIcon />
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="email">
+                Email <Table.SortIcon />
+              </Table.HeadCell>
+              <Table.HeadCell sortBy="ipAddress">
+                IP Address <Table.SortIcon />
+              </Table.HeadCell>
+              <Table.HeadCell />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body data={users} hover>
+            {users =>
+              users.map(user => (
+                <Table.Row key={user.id} className="inline-actions">
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.ipAddress}</Table.Cell>
+                  <Table.Cell>
+                    <Table.Button onClick={handleClickDelete(user)}>
+                      Delete
+                    </Table.Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            }
+          </Table.Body>
+        </Table.Table>
+      </Table.Container>
       <Table.Pagination perPage={10} />
     </Table.Provider>
   )
@@ -90,43 +94,49 @@ export const Global = () => {
           <label style={{ width: '100%' }}>
             IP Address <input name="ipAddress" style={{ width: '100%' }} />
           </label>
-          <button type="submit" style={{ marginTop: '16px' }}>
+          <Table.Button type="submit" style={{ marginTop: '16px' }}>
             Save
-          </button>
+          </Table.Button>
         </form>
       </Dialog>
 
       <Table.Provider>
-        <Table.Search />
-        <button onClick={() => setOpen(true)} style={{ marginLeft: '24px' }}>
-          Add user
-        </button>
-        <Table.Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeadCell sortBy="name">
-                Name <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="email">
-                Email <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="ipAddress">
-                IP Address <Table.SortIcon />
-              </Table.HeadCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body data={users}>
-            {users =>
-              users.map(user => (
-                <Table.Row key={user.id}>
-                  <Table.Cell>{user.name}</Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.ipAddress}</Table.Cell>
-                </Table.Row>
-              ))
-            }
-          </Table.Body>
-        </Table.Table>
+        <div className="toolbar">
+          <Table.Search
+            placeholder="Search"
+            aria-label="Search"
+            className="mr-m"
+          />
+          <Table.Button onClick={() => setOpen(true)}>Add user</Table.Button>
+        </div>
+        <Table.Container>
+          <Table.Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeadCell sortBy="name">
+                  Name <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="email">
+                  Email <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="ipAddress">
+                  IP Address <Table.SortIcon />
+                </Table.HeadCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body data={users}>
+              {users =>
+                users.map(user => (
+                  <Table.Row key={user.id}>
+                    <Table.Cell>{user.name}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                    <Table.Cell>{user.ipAddress}</Table.Cell>
+                  </Table.Row>
+                ))
+              }
+            </Table.Body>
+          </Table.Table>
+        </Table.Container>
         <Table.Pagination perPage={10} />
       </Table.Provider>
     </>

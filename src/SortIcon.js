@@ -3,54 +3,54 @@ import { SortContext } from './Context'
 
 const defaultInactiveIcon = (
   <svg
-    width="16"
-    height="16"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
   >
     <path
       d="M6 15L12 21L18 15M18 9L12 3L6 9"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
 
 const defaultAscIcon = (
   <svg
-    width="16"
-    height="16"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
   >
     <path
       d="M18 9L12 3L6 9"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
 
 const defaultDescIcon = (
   <svg
-    width="16"
-    height="16"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
   >
     <path
       d="M6 15L12 21L18 15"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )

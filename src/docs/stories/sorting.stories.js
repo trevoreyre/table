@@ -8,82 +8,82 @@ export default {
 
 export const Sorting = () => (
   <Table.Provider>
-    <Table.Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            <Table.SortLabel>
-              Name <Table.SortIcon />
-            </Table.SortLabel>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            <Table.SortLabel>
-              Email <Table.SortIcon />
-            </Table.SortLabel>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="age">
-            <Table.SortLabel>
-              Age <Table.SortIcon />
-            </Table.SortLabel>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            <Table.SortLabel>
-              IP Address <Table.SortIcon />
-            </Table.SortLabel>
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.age}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              <Table.Text>Name</Table.Text>
+              <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              <Table.Text>Email</Table.Text>
+              <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="age">
+              <Table.Text>Age</Table.Text>
+              <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              <Table.Text>IP Address</Table.Text>
+              <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.age}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
   </Table.Provider>
 )
 
 export const DefaultSort = () => (
   <Table.Provider>
-    <Table.Table>
-      <Table.Header defaultSortBy="email" defaultSortDirection="asc">
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            <Table.SortIcon />
-            <Table.Text>Name</Table.Text>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            <Table.SortIcon />
-            <Table.Text>Email</Table.Text>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="age">
-            <Table.SortIcon /> <Table.Text>Age</Table.Text>
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            <Table.SortIcon />
-            <Table.Text>IP Address</Table.Text>
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.age}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table>
+        <Table.Header defaultSortBy="email" defaultSortDirection="asc">
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              <Table.SortIcon />
+              <Table.Text>Name</Table.Text>
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              <Table.SortIcon />
+              <Table.Text>Email</Table.Text>
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="age">
+              <Table.SortIcon /> <Table.Text>Age</Table.Text>
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              <Table.SortIcon />
+              <Table.Text>IP Address</Table.Text>
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.age}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
   </Table.Provider>
 )
 
@@ -179,40 +179,42 @@ export const Controlled = () => {
         </label>
       </fieldset>
       <Table.Provider>
-        <Table.Table>
-          <Table.Header
-            sortBy={sortBy}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-          >
-            <Table.Row>
-              <Table.HeadCell sortBy="name">
-                Name <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="email">
-                Email <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="age">
-                Age <Table.SortIcon />
-              </Table.HeadCell>
-              <Table.HeadCell sortBy="ipAddress">
-                IP Address <Table.SortIcon />
-              </Table.HeadCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body data={users}>
-            {users =>
-              users.map(user => (
-                <Table.Row key={user.id}>
-                  <Table.Cell>{user.name}</Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.age}</Table.Cell>
-                  <Table.Cell>{user.ipAddress}</Table.Cell>
-                </Table.Row>
-              ))
-            }
-          </Table.Body>
-        </Table.Table>
+        <Table.Container>
+          <Table.Table>
+            <Table.Header
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            >
+              <Table.Row>
+                <Table.HeadCell sortBy="name">
+                  Name <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="email">
+                  Email <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="age">
+                  Age <Table.SortIcon />
+                </Table.HeadCell>
+                <Table.HeadCell sortBy="ipAddress">
+                  IP Address <Table.SortIcon />
+                </Table.HeadCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body data={users}>
+              {users =>
+                users.map(user => (
+                  <Table.Row key={user.id}>
+                    <Table.Cell>{user.name}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                    <Table.Cell>{user.age}</Table.Cell>
+                    <Table.Cell>{user.ipAddress}</Table.Cell>
+                  </Table.Row>
+                ))
+              }
+            </Table.Body>
+          </Table.Table>
+        </Table.Container>
       </Table.Provider>
     </>
   )
@@ -220,72 +222,76 @@ export const Controlled = () => {
 
 export const ControlledSortBy = () => (
   <Table.Provider>
-    <Table.Table>
-      <Table.Header sortBy="email">
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="age">
-            Age <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.age}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table>
+        <Table.Header sortBy="email">
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="age">
+              Age <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.age}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
   </Table.Provider>
 )
 ControlledSortBy.story = { name: 'Controlled sortBy' }
 
 export const ControlledSortDirection = () => (
   <Table.Provider>
-    <Table.Table>
-      <Table.Header sortDirection="asc">
-        <Table.Row>
-          <Table.HeadCell sortBy="name">
-            Name <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="email">
-            Email <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="age">
-            Age <Table.SortIcon />
-          </Table.HeadCell>
-          <Table.HeadCell sortBy="ipAddress">
-            IP Address <Table.SortIcon />
-          </Table.HeadCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body data={users}>
-        {users =>
-          users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.age}</Table.Cell>
-              <Table.Cell>{user.ipAddress}</Table.Cell>
-            </Table.Row>
-          ))
-        }
-      </Table.Body>
-    </Table.Table>
+    <Table.Container>
+      <Table.Table>
+        <Table.Header sortDirection="asc">
+          <Table.Row>
+            <Table.HeadCell sortBy="name">
+              Name <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="email">
+              Email <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="age">
+              Age <Table.SortIcon />
+            </Table.HeadCell>
+            <Table.HeadCell sortBy="ipAddress">
+              IP Address <Table.SortIcon />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body data={users}>
+          {users =>
+            users.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.age}</Table.Cell>
+                <Table.Cell>{user.ipAddress}</Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Table>
+    </Table.Container>
   </Table.Provider>
 )
 ControlledSortDirection.story = { name: 'Controlled sortDirection' }
