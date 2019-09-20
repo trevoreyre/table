@@ -2,4 +2,4 @@
 
 A React data table component. Currently under development.
 
-[View in-progress examples](https://trevoreyre.github.io/table)
+[View in-progress examples](https://table.trevoreyre.com)
