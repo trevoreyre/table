@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "start-storybook -p 5000",
-    "build": "npm run clean && build-storybook --docs -o docs",
+    "build:docs": "npm run clean && build-storybook --docs -o docs",
     "clean": "rimraf docs",
     "lint": "eslint --ignore-path .gitignore --ignore-pattern 'docs/' --fix ."
   },
