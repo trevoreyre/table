@@ -1,5 +1,6 @@
 import React from 'react'
 
+// TODO: Screen-reader only text
 const Text = props => {
   const { as: As = 'span', children, ...other } = props
 

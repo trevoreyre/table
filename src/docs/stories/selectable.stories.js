@@ -26,7 +26,7 @@ export const Selectable = () => (
             </Table.HeadCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body data={users}>
+        <Table.Body data={users} striped>
           {users =>
             users.map(user => (
               <Table.Row key={user.id}>
@@ -65,7 +65,7 @@ export const SelectByRow = () => (
             </Table.HeadCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body data={users} hover>
+        <Table.Body data={users} striped hover>
           {users =>
             users.map(user => (
               <Table.Row key={user.id} select={user.id}>
@@ -175,6 +175,8 @@ const TableExample = () => {
   const state = useTableState()
   const dispatch = useTableDispatch()
 
+  const count = state.selected.length
+
   const handleDeleteClick = selected => () => {
     setCurrentUsers(currentUsers.filter(user => !selected.includes(user.id)))
     dispatch({ type: 'selectAll', checked: false })
@@ -183,9 +185,11 @@ const TableExample = () => {
   return (
     <>
       <Table.Search placeholder="Search" aria-label="Search" />
-      {!!state.selected.length && (
+      {!!count && (
         <>
-          <span className="ml-m mr-s">{state.selected.length} selected</span>
+          <span className="ml-m mr-s">
+            Selected {count} user{count === 1 ? '' : 's'}
+          </span>
           <Table.Button onClick={handleDeleteClick(state.selected)}>
             Delete
           </Table.Button>

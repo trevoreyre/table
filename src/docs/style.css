@@ -14,6 +14,10 @@
   justify-content: flex-end;
 }
 
+.toolbar span {
+  color: rgba(0, 0, 0, 0.16);
+}
+
 .avatar-cell {
   width: 48px;
 }
@@ -63,12 +67,26 @@
   background: #fff5f5;
 }
 
-.inline-actions button {
+.inline-actions .toolbar {
   visibility: hidden;
 }
 
-.inline-actions:hover button {
+.inline-actions:hover .toolbar {
   visibility: visible;
+}
+
+#page-input {
+  width: 80px;
+}
+
+button.link {
+  all: unset;
+  color: #63b3ed;
+  cursor: pointer;
+}
+
+button.link:hover {
+  text-decoration: underline;
 }
 
 /* Utility spacing classes */

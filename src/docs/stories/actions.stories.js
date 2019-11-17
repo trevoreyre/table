@@ -35,17 +35,32 @@ export const Inline = () => {
               <Table.HeadCell />
             </Table.Row>
           </Table.Header>
-          <Table.Body data={users} hover>
+          <Table.Body data={users} striped hover>
             {users =>
               users.map(user => (
                 <Table.Row key={user.id} className="inline-actions">
-                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>
+                    <button
+                      className="link"
+                      onClick={() => alert(`Clicked on ${user.name}`)}
+                    >
+                      {user.name}
+                    </button>
+                  </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.ipAddress}</Table.Cell>
                   <Table.Cell>
-                    <Table.Button onClick={handleClickDelete(user)}>
-                      Delete
-                    </Table.Button>
+                    <div className="toolbar">
+                      <Table.Button
+                        onClick={() => alert(`Invited ${user.name}`)}
+                      >
+                        Invite
+                      </Table.Button>
+                      <span className="ml-s mr-s">|</span>
+                      <Table.Button onClick={handleClickDelete(user)}>
+                        Delete
+                      </Table.Button>
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               ))
@@ -107,7 +122,7 @@ export const Global = () => {
             aria-label="Search"
             className="mr-m"
           />
-          <Table.Button onClick={() => setOpen(true)}>Add user</Table.Button>
+          <Table.Button onClick={() => setOpen(true)}>Add User</Table.Button>
         </div>
         <Table.Container>
           <Table.Table>

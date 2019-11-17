@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { SortContext, useTableState, useTableDispatch } from './Context'
 
+// TODO: align prop
 const HeadCell = props => {
   const { as: As = 'th', children, onClick, sortBy, sort, ...other } = props
   const state = useTableState()
